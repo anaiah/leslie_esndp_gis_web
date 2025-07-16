@@ -106,87 +106,89 @@
             let db = localStorage
             const owner =  JSON.parse(db.getItem('profile'))
 
-            console.log(owner)
+            util.Toasted(`Welcome ${ownder.full_name}`,3000,false)
             
-            // Log latitude and longitude on map click
-            map.on('click', async (e) => {
-                const lat = e.latlng.lat.toFixed(6);
-                const lng = e.latlng.lng.toFixed(6);
+            //console.log(owner)
+            
+            // // Log latitude and longitude on map click
+            // map.on('click', async (e) => {
+            //     const lat = e.latlng.lat.toFixed(6);
+            //     const lng = e.latlng.lng.toFixed(6);
 
-                try {
-                    const elev = await xmap.getElevationAsync(e.latlng.lat, e.latlng.lng);
-                    document.getElementById('elevationField').value = `${elev.toFixed(2)} meters`
-                } catch (err) {
-                    console.error(err);
-                }
-                // // Reverse geocode with Nominatim
-                //fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-                fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyD2KmdjMR6loRYvAAxAs84ioWrpYlPgzco`)
-                    .then(response => response.json())
-                     .then(data => {
-                        if (data.status === "OK" && data.results.length > 0) {
-                        const firstResult = data.results[0];    
+            //     try {
+            //         const elev = await xmap.getElevationAsync(e.latlng.lat, e.latlng.lng);
+            //         document.getElementById('elevationField').value = `${elev.toFixed(2)} meters`
+            //     } catch (err) {
+            //         console.error(err);
+            //     }
+            //     // // Reverse geocode with Nominatim
+            //     //fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+            //     fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyD2KmdjMR6loRYvAAxAs84ioWrpYlPgzco`)
+            //         .then(response => response.json())
+            //          .then(data => {
+            //             if (data.status === "OK" && data.results.length > 0) {
+            //             const firstResult = data.results[0];    
 
-                        // Full address
-                        const address = firstResult.formatted_address;
+            //             // Full address
+            //             const address = firstResult.formatted_address;
                         
-                        // Extract specific components like city, country, etc.
-                        const addressComponents = firstResult.address_components;
+            //             // Extract specific components like city, country, etc.
+            //             const addressComponents = firstResult.address_components;
 
-                        let city = '';
-                        let country = '';
-                        let state = '';
+            //             let city = '';
+            //             let country = '';
+            //             let state = '';
 
-                        addressComponents.forEach(component => {
-                            if (component.types.includes('locality')) {
-                            city = component.long_name;
-                            }
-                            if (component.types.includes('administrative_area_level_1')) {
-                            state = component.long_name;
-                            }
-                            if (component.types.includes('country')) {
-                            country = component.long_name;
-                            }
-                        });
+            //             addressComponents.forEach(component => {
+            //                 if (component.types.includes('locality')) {
+            //                 city = component.long_name;
+            //                 }
+            //                 if (component.types.includes('administrative_area_level_1')) {
+            //                 state = component.long_name;
+            //                 }
+            //                 if (component.types.includes('country')) {
+            //                 country = component.long_name;
+            //                 }
+            //             });
 
-                        console.log('Address:', address);
-                        console.log('City:', city);
-                        console.log('State:', state);
-                        console.log('Country:', country);
+            //             console.log('Address:', address);
+            //             console.log('City:', city);
+            //             console.log('State:', state);
+            //             console.log('Country:', country);
 
-                        // Example: fill the form fields
-                        document.getElementById('addressField').value = address; // suppose you have such an input
-                        document.getElementById('cityField').value = city;
-                        // similarly for state, country
-                        } else {
-                        console.error('No results found or error:', data.status);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+            //             // Example: fill the form fields
+            //             document.getElementById('addressField').value = address; // suppose you have such an input
+            //             document.getElementById('cityField').value = city;
+            //             // similarly for state, country
+            //             } else {
+            //             console.error('No results found or error:', data.status);
+            //             }
+            //         })
+            //         .catch(error => console.error('Error:', error));
 
-                //GET CODE
-                document.getElementById('projectCode').value = util.Codes()
+            //     //GET CODE
+            //     document.getElementById('projectCode').value = util.Codes()
 
 
-                //const coordsDisplay = document.getElementById('coordsDisplay');
-                xmap.configObj = { keyboard: false, backdrop:'static' }
-                xmap.projectModal = new bootstrap.Modal(document.getElementById('projectModal'),xmap.configObj);
+            //     //const coordsDisplay = document.getElementById('coordsDisplay');
+            //     xmap.configObj = { keyboard: false, backdrop:'static' }
+            //     xmap.projectModal = new bootstrap.Modal(document.getElementById('projectModal'),xmap.configObj);
 
-                // Show modal
-                xmap.projectModal.show();
+            //     // Show modal
+            //     xmap.projectModal.show();
 
-                // Optional: focus on project name input
-                document.getElementById('projectName').focus();
+            //     // Optional: focus on project name input
+            //     document.getElementById('projectName').focus();
                 
-                document.getElementById('latField').value = lat 
-                document.getElementById('lonField').value = lng 
-                document.getElementById('projectOwner').value  = owner[0].full_name 
+            //     document.getElementById('latField').value = lat 
+            //     document.getElementById('lonField').value = lng 
+            //     document.getElementById('projectOwner').value  = owner[0].full_name 
                                 
-                console.log( `Latitude: ${lat}, Longitude: ${lng}`)
+            //     console.log( `Latitude: ${lat}, Longitude: ${lng}`)
                 
-            // coordsDisplay.textContent = `Latitude: ${lat}, Longitude: ${lng}`;
-            });
-        }
+            // // coordsDisplay.textContent = `Latitude: ${lat}, Longitude: ${lng}`;
+            // });
+        }//end init()
 
 
     }//===end obj

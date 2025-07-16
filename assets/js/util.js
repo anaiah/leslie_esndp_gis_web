@@ -156,7 +156,7 @@ const util = {
                 y:100//window.innerHeight/2 // vertical axis - can be a number or a string indicating unity. eg: '2em'
             },
             style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            background: "linear-gradient(to right, #323232,rgb(36, 36, 36))",
             }
         }).showToast();
         
