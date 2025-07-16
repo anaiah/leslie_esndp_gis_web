@@ -100,16 +100,21 @@
             opacity: 1;
         }
 
-        #chart-card{
-            position:fixed;
-            top:20px;
-            right:20px;
-            width:3300px;
-            height:auto;
-            background-color: rgba(255,255,255,0.7);
-            padding:20px;
-            box-sizing:border-box;
-            z-index:1000;
+       .chart-card {
+        position: absolute; /* Absolute positioning to overlay the map */
+        top: 10%; /* Adjust as needed */
+        right: 0; /* Aligns card to the right */
+        width: 20%; /* 20% of the width */
+        background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+        border-radius: 8px; /* Rounded corners */
+        overflow: hidden; /* Ensures content doesn't spill out */
+        }
+
+        #chart-card h5 {
+        margin-bottom: 10px;
+        color: #333; /* Customize text color */
         }
     </style>
     </head>
@@ -147,7 +152,7 @@
         
         </div>
 
-        <div id="chart-card">
+        <div id="chart-card" class="chart-card position-absolute">
             <h5>Month-to-Date</h5>
             <canvas id="myChart" width="400" height="200"></canvas>
         </div>
