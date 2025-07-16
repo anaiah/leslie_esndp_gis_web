@@ -1149,11 +1149,11 @@ const util = {
             
             if(data){
 
-                db.setItem('profile', JSON.stringify(data) )
+                db.setItem('profile', JSON.stringify(data[0]) )
   
-                util.speak(`Welcome, ${data.full_name}.. !`)
+                util.speak(`Welcome, ${data[0].full_name}.. !`)
                 
-                util.alertMsg(data.message,'success','loginPlaceHolder')
+                util.alertMsg(data[0].message,'success','loginPlaceHolder')
                 
                 //hide modalbox
                 //util.hideModal('loginModal',2000)    
