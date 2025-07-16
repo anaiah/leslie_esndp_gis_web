@@ -1159,12 +1159,12 @@ const util = {
                 //util.hideModal('loginModal',2000)    
                 
                 
-                if(data.grp_id=="1"){//business dev
-                    location.href = './map.html'
+                // if(data.grp_id=="1"){//business dev
+                //     location.href = './map.html'
                 
-                }else{
-                    location.href = './base.html'
-                }//eif
+                // }else{
+                //     location.href = './base.html'
+                // }//eif
                         
             }else{
                 util.speak('DATA NOT FOUND')
