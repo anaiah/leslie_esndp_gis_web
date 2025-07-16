@@ -181,7 +181,7 @@
                 
                 document.getElementById('latField').value = lat 
                 document.getElementById('lonField').value = lng 
-                document.getElementById('projectOwner').value  = owner[0].full_name 
+                document.getElementById('projectOwner').value  = owner.full_name 
                                 
                 console.log( `Latitude: ${lat}, Longitude: ${lng}`)
                 
