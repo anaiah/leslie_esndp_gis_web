@@ -91,6 +91,7 @@
         configObj:null,
         projectModal:null,
 
+        myIp : "https://esndp-gis-jku4q.ondigitalocean.app",
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
@@ -115,7 +116,7 @@
             //==HANDSHAKE FIRST WITH SOCKET.IO
             const userName = { token : authz[1] , mode: owner.grp_id}//full name token
 
-            basemap.socket = io.connect(`${util.myIp}`, {
+            basemap.socket = io.connect(`${basemap.myIp}`, {
                 //withCredentials: true,
                 transports: ['websocket', 'polling'], // Same as server
                 upgrade: true, // Ensure WebSocket upgrade is attempted
@@ -130,7 +131,7 @@
                 console.log('MAP PIN DATA', data)
                 util.Toasted('INCOMING MAP!!!',4000,false)
             })  
-            
+
             basemap.socket.on('connect', () => {
                 console.log('Connected to Socket.IO server using:', basemap.socket.io.engine.transport.name); // Check the transport
             });
