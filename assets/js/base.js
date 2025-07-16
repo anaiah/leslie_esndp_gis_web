@@ -106,8 +106,8 @@
             let db = localStorage
             const owner =  JSON.parse(db.getItem('profile'))
 
-            util.Toasted(`Welcome ${ownder.full_name}`,3000,false)
-            
+            util.Toasted(`Welcome ${owner.full_name}`,3000,false)
+
             //console.log(owner)
             
             // // Log latitude and longitude on map click
