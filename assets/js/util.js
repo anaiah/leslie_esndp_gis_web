@@ -143,7 +143,24 @@ const util = {
     },
     //===============END MESSENGER ===================
     */
-    
+      //utility toastify
+    Toasted:async(msg,nDuration,lClose)=>{
+        Toastify({
+            text: msg ,
+            duration: nDuration,
+            escapeMarkup: false, //to create html
+            close: lClose,
+            position:'center',
+            offset:{
+                x: 0,
+                y:100//window.innerHeight/2 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+            },
+            style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+        
+    }, //===end toasted!
     //==============FORM FUNCS ===========
     clearBox:function(){
         let reset_input_values = document.querySelectorAll("input[type=text]") 
@@ -1133,21 +1150,21 @@ const util = {
             if(data){
 
                 db.setItem('profile', JSON.stringify(data) )
+  
+                util.speak(`Welcome, ${data.full_name}.. !`)
                 
-                //////// === hide ko muna voice ha? paki-balik pag prod na -->util.speak(data.voice)
                 util.alertMsg(data.message,'success','loginPlaceHolder')
                 
                 //hide modalbox
                 //util.hideModal('loginModal',2000)    
                 
                 
-                // if(data.grp_id=="2"){//business dev0
-               location.href = './map.html'
-                /*
-                }else if( data.grp_id=="1" || data.grp_id=="0"){//engr/architect/acctg
-                    location.href = '/dashboard.html'
-                }
-                */
+                if(data.grp_id=="1"){//business dev
+                    location.href = './map.html'
+                
+                }else{
+                    location.href = './base.html'
+                }//eif
                         
             }else{
                 util.speak('DATA NOT FOUND')
