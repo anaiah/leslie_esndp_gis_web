@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ESNDP-GIS</title>
+  <link rel="icon" href="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/6493473a78c313186d0b8b2b_Favicon.png" sizes="32x32" />
+  
+  <!-- <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css?h=0516002ac6166f9bc5a60df257b0e1f8">
+    -->
+  <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../assets/css/osndp.css" />
+</head>
+
+<body id="myBody">
+  <!--  Body Wrapper -->
+  <div id="kutos">
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-3">
+
+
+            <div class="card mb-0 fade-in" id="myCard">
+              <div class="card-body">
+                <!--//company logo -->
+                <a href="../" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <img src="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/64896056751d0f55b4245ca4_Hi-Res%20Leslie%20Logo.png"  height="70px" alt="" />
+                </a>
+
+                <p class="text-center">ESNDP - GIS</p>
+                <!--//end company logo -->
+                <form id="loginForm" name="loginForm" class="needs-validation">
+                  
+                  <!--//=== ALERT CONTAINER!!!-->
+                  <div id="loginPlaceHolder"></div>
+                  <!--//END ALERT-->
+
+                  <div class="mb-3">
+                    <i class="ti ti-user" style="color:blue"></i>
+                    <label for="uid" class="form-label">Username</label>
+                    <input type="email" class="form-control login" id="uid" name="uid" aria-describedby="emailHelp" required>
+                    <div class="invalid-feedback">
+                      Enter valid email address
+                    </div>
+                    <div class="valid-feedback">
+                        Looking Good!
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <i class="ti ti-lock" style="color:blue"></i>
+                    <label for="pwd" class="form-label">Password</label>
+                    <input type="password" class="form-control login" id="pwd" name="pwd" required>
+                    <div class="invalid-feedback">
+                      Enter valid password
+                    </div>
+                    <div class="valid-feedback">
+                        Looking Good!
+                    </div>
+                
+                  </div>
+              
+                  <!--//
+                  <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="form-check">
+                      <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
+                      <label class="form-check-label text-dark" for="flexCheckChecked">
+                        Remeber this Device
+                      </label>
+                    </div>
+                    <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
+                  </div>
+                  <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</a>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
+                    <a class="text-primary fw-bold ms-2" href="./authentication-register.html">Create an account</a>
+                  </div>
+                  //-->
+                  <div class="modal-footer">
+                    <!-- <button class="btn btn-light"  type="button" data-bs-dismiss="modal">Close</button> -->
+                    <button class="btn btn-primary"  id="loginbtn" onclick="util.validateMe('loginModal','#loginForm','login')" type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                      &nbsp;Login</button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <style>
+   @import url(//fonts.googleapis.com/css?family=Lato); 
+
+    body{
+      min-height: 100vh;
+      background:url('../assets/images/backgrounds/intro-bg.jpg') no-repeat center center fixed; 
+      -webkit-background-size: cover;
+     -moz-background-size: cover;
+     -o-background-size: cover;
+     background-size: cover; 
+
+    }
+    :target{
+	  border:1px solid gray;
+    }
+
+    *, *::before, *::after{
+      box-sizing: border-box;
+    }
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .fade-in.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  </style>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     -->
+  <!-- <script src="../assets/libs/jquery/dist/jquery.min.js"></script> -->
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  
+
+  <script src="../assets/js/util.js?v=8"></script>
+  <!-- <script src="/html/assets/js/login.js?v=8"></script> -->
+
+  <script>
+    
+    db = window.localStorage
+
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      console.log('=======DOM CONTENT LOADED=====')
+
+      // if (!main.isChrome()) {  // Use ! to check if NOT Chrome
+      //   alert('PLEASE USE CHROME BROWSER!');
+      //   // Prevent login
+      //   let button = document.getElementById('loginbtn');
+      //   if (button) { // Check if button exists before disabling
+      //       button.disabled = true;
+      //       button.setAttribute('aria-disabled', 'true');
+      //       window.location.replace("./jtx/help");
+      //   }
+      // } else {
+      //   // Optional: Code to execute if the browser is Chrome
+      //   console.log("Chrome browser detected.");
+          
+      //   main.formValidate()          
+      //   main.checkTime()
+      //   main.checkGeoLocation()
+      //   main.checkDOMLoad()
+      
+      // }
+
+        main.formValidate()          
+        //main.checkTime()
+        main.checkGeoLocation()
+        main.checkDOMLoad()
+      
+        // let button = document.getElementById('loginbtn')
+        //       button.disabled = true;
+        //       button.setAttribute('aria-disabled', 'true'); //Optional, but helps screen readers
+              
+        //       xmsg = "<div><i class='fa fa-spinner fa-pulse' ></i>SYSTEM UNDERGOING MAINTENANCE! WE APOLOGIZE FOR THE INCONVINIENCE!</div>"
+        //       util.alertMsg( xmsg,'danger','loginPlaceHolder')
+        
+      
+    });//=====END DOM CONTENT LOADED=====
+
+    //=============================// main object // ====================
+    const main = {
+      
+      formValidate:()=>{
+        //change form action 
+        //document.getElementById('uploadForm').action=`${myIp}/postimage`
+
+        util.loadFormValidation('#loginForm')
+        // util.loadFormValidation('#newempForm')
+        // util.modalListeners('newempModal')
+            
+        console.log('loadformValidation() loaded==')
+      },
+
+      isChrome: () => {
+        // Check for Google Chrome specifically, also excluding Edge Chromium
+        return (typeof window.chrome !== 'undefined') && (navigator.userAgent.indexOf('Edg') === -1);
+      },
+      checkDOMLoad:()=>{
+
+        // //get frm localstorage
+        // if( db.getItem('profile')){
+        //   //if there's profile set it up so rider wont type the name
+        //   const uid = JSON.parse(db.getItem('profile'))
+        //   //console.log(uid)
+        //   document.getElementById('uid').value = uid.email
+        //   document.getElementById('pwd').value ='123'
+        // }
+        
+        // let bgimage = ['asiaone1.png', 'bgrnd.png']
+        // let xx = Math.floor(Math.random() * 2);
+  
+        //document.getElementById('myBody').style.backgroundImage = `url('/html/assets/images/backgrounds/${bgimage[xx] }')`
+        
+        document.getElementById('myCard').classList.add('show')
+
+        // setTimeout(() => {
+        //     const audio  = new Audio('/html/intro.mp3')
+        //     audio.play().catch(error => {
+        //         console.error("Audio playback failed:", error);
+        //     });
+        //     document.getElementById('myCard').classList.add('show');// show login  card
+        // }, 2000); // Delay of 1000 milliseconds (1 second)
+      },
+
+      checkTime:()=>{
+        const now = new Date();
+        const hours = now.getHours(); // returns 0-23
+        const wHrs = hours % 24; //modules to get 12am as 0
+
+        if (wHrs === 0) { // Check for 12 AM (0)
+          alert('CutOff system!')
+          window.location.replace("./jtx/help");
+        } else if (wHrs >= 0 && wHrs < 6) { //AM period
+          // Set your cutoff time logic here
+          alert('CutOff system!')
+          window.location.replace("./jtx/help");
+        }
+      },
+
+      help:()=>{
+        window.location.replace("./jtx/help");
+      },
+
+      checkGeoLocation:()=>{
+        //CHECK GPS FIRST
+        if (navigator.geolocation) {
+          
+            main.getHubLocation()
+          
+            
+        }else{
+            alert('PLEASE TURN-ON YOUR PHONE LOCATION OR GPS THEN REFRESH YOUR BROWSER')
+            return false
+        }
+      },
+
+      //loginbtn pressed -- check input first
+      checkinput:() => {
+        let gonow = true
+
+        try{
+          
+
+        }catch(error){
+
+        }finally{
+          
+          if(gonow){
+              let button = document.getElementById('loginbtn')
+              button.disabled = true;
+              button.setAttribute('aria-disabled', 'true'); //Optional, but helps screen readers
+              
+              xmsg = "<div><i class='fa fa-spinner fa-pulse' ></i>  Searching Database please wait...</div>"
+              util.alertMsg( xmsg,'danger','loginPlaceHolder')
+        
+              util.validateMe('loginModal','#loginForm','login')
+              
+          }else{
+            return false
+          }
+          
+        }//end try
+      },
+
+      ///show postiion of rider
+      showPosition: (position) => { 
+        
+        console.log('GETTING POSITION ',position.coords.latitude, position.coords.longitude )
+        
+        let obj={}
+          obj.lat = position.coords.latitude
+          obj.lon = position.coords.longitude
+
+          //===
+
+      
+        
+        //document.getElementById('hub').innerHTML=`WareHouse Location is ${obj.lat}, ${obj.lon}` 
+
+        //console.log(JSON.stringify(obj))
+       
+      },
+
+      getHubLocation:()=>{
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition( main.showPosition );
+        }else{
+          alert('PLEASE TURN-ON YOUR PHONE LOCATION OR GPS')
+          return false
+        }
+      },
+
+      checkFileSize:()=>{
+        const fi = document.getElementById('uploaded_file');
+        // Check if any file is selected.
+        if (fi.files.length > 0) {
+            for (let i = 0; i <= fi.files.length - 1; i++) {
+
+                const fsize = fi.files.item(i).size;
+                const file = Math.round((fsize / 1024));
+                // The size of the file.
+                if (file >= 1000) {
+                    const btnupload = document.getElementById('mall-save-btn')
+                    btnupload.disabled = true
+
+                    util.alertMsg("File too Big, please select a file less than 1mb","danger","size");
+                    
+                    fi.value=null
+                    //go bottom page
+                    util.scrollsTo('blindspot')
+
+                    return false;
+
+                }else{
+                    
+                    document.getElementById('size').innerHTML=""//reset
+                    const btnupload = document.getElementById('mall-save-btn')
+                    btnupload.disabled = false
+                }
+                /* turn off display of filesize */
+                ///document.getElementById('size').innerHTML ='<b>'+ file + '</b> KB';
+                
+            }
+        }
+    }
+    }
+    
+  </script>
+  
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Leslie's GIS</title>
+
+    <link rel="icon" href="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/6493473a78c313186d0b8b2b_Favicon.png" sizes="32x32" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    
+    <style>
+        body {
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+        }
+
+        .navbar {
+        box-shadow: 0 4px 2px -2px gray;
+        z-index: 1030;
+        position: fixed;
+        width: 100%;
+        }
+
+        #sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        background: #333;
+        color: white;
+        transition: left 0.3s;
+        padding-top: 60px;
+        z-index: 1020;
+        overflow: auto;
+        }
+
+        #sidebar a {
+        color: white;
+        padding: 10px;
+        display: block;
+        cursor: pointer;
+        }
+
+        /* This class is for expanding the card container to fill the page */
+        #main {
+        position: absolute;
+        top: 56px; /* height of navbar */
+        left: 0;
+        width: 100%;
+        height: calc(100% - 56px);
+        transition: margin-left 0.3s, width 0.3s, height 0.3s, top 0.3s;
+        }
+
+        /* When sidebar expanded, shift main content */
+        #main.sidebar-open {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        height: calc(100% - 56px);
+        top: 56px;
+        }
+
+        /* Make the card occupy full container */
+        .full-page {
+        height: 100%;
+        width: 100%;
+        }
+
+        #map {
+        height: 100%;
+        width: 100%;
+        }
+
+        .card {
+        height: 100%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Remove default margin for body to extend content */
+        body, html {
+        height: 100%;
+        margin: 0;
+        }
+    </style>
+    </head>
+
+    <body>
+    <!-- Navbar with logo on right and hamburger on left -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+        <button class="navbar-toggler" type="button" id="menuBtn">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand ms-auto me-3" href="javascript:void(0)" id="brandLogo">
+            <img src="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/64896056751d0f55b4245ca4_Hi-Res%20Leslie%20Logo.png"  height="30px" alt="" />
+        </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <h2 class="mt-2 text-center"><img src="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/64896056751d0f55b4245ca4_Hi-Res%20Leslie%20Logo.png"  height="50px" alt="" /></h2>
+        <a href="#" class="sidebar-link">Home</a>
+        <a href="#" class="sidebar-link">About</a>
+        <a href="#" class="sidebar-link">Services</a>
+        <a href="#" class="sidebar-link">Contact</a>
+    </div>
+
+    <!-- Main content container, fills entire page -->
+    <div id="main" class="mt-56">
+        <div class="full-page p-0 m-0">
+        <div class="card h-100 p-3 bg-light">
+            <div id="map"></div>
+            <!-- <div class="mt-2" id="coordsDisplay">Click on the map to see coordinates</div> -->
+        </div>
+        </div>
+    </div>
+    <!-- =================================MODALS=================================== -->
+
+    <!-- Add this modal HTML somewhere after the body content -->
+    <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="projectModalLabel">Project Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="projectForm" name="projectForm">
+            
+            <div class="mb-3">
+                <label for="projectCode" class="form-label">Project Code</label>
+                <input type="text" class="form-control" id="projectCode" name="projectCode" readonly>
+            </div>
+            
+            <div class="mb-3">
+                <label for="projectName" class="form-label">Project Name</label>
+                <input type="text" class="form-control" id="projectName" name="projectName" required>
+            </div>
+            <div class="mb-3">
+                <label for="projectOwner" class="form-label">Project Owner</label>
+                <input type="text" class="form-control" id="projectOwner" name="projectOwner" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="addressField" class="form-label">Address</label>
+                <textarea class="form-control" id="addressField" name="addressField" readonly rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="cityField" class="form-label">City</label>
+                <input type="text" class="form-control" id="cityField" name="cityField" readonly >
+            </div>
+            <div class="mb-3">
+                <label for="elevationField" class="form-label">Elevation</label>
+                <input type="text" class="form-control" id="elevationField" name="elevationField" readonly >
+            </div>
+            
+            <div class="mb-3">
+                <label for="latField" class="form-label">Latitude</label>
+                <input type="text" class="form-control" id="latField" name="latField" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="lonField" class="form-label">Longitude</label>
+                <input type="text" class="form-control" id="lonField" name="lonField" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="imageUpload" class="form-label">Upload Image</label>
+                <input class="form-control" type="file" id="image_upload_file" name="image_upload_file" capture="environment" accept="image/*">
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <!-- Optional: Add Save or Submit button -->
+            <button type="button" onclick="javascript:util.validateMe('projectModal','#projectForm','equipmentx')" class="btn btn-primary" form="projectForm">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Scripts -->
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2KmdjMR6loRYvAAxAs84ioWrpYlPgzco&libraries=visualization">
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="./assets/js/util.js?v=1"></script>
+    <script src="./assets/js/map.js?v=1"></script>
+
+</body>
+</html>
