@@ -40,11 +40,12 @@
                     console.log(data)
 
                     xmap.socket.emit('sendToMgr', data)
+                    console.log( '===EMIT sendToMgr===')
 
                 }else{
                     util.speak(data.voice)
-                    //util.alertMsg(data.message,'warning','equipmentPlaceHolder')
-                    return false
+                    
+                    return
                 }//eif
                 
                 
