@@ -137,11 +137,23 @@
                 let lat = parseFloat(xdata.lat)
                 let lon = parseFloat(xdata.lon)
 
-                console.log(lat,lon)
+                let pic = `https://asianowapp.com//html/rcpt/${xdata.pic}`
+
+                //console.log(lat,lon)
                 let latlng = L.latLng( lat, lon) 
                 let marker = L.marker(latlng).addTo(map)
+
+                let markerElement = marker._icon;
+
+                setTimeout(()=>{
+                    markerElement.classList.add('fade-in')
+                })
+
                 marker.bindPopup(`<b>Project : ${xdata.project}<br>
-                                     Owner: ${xdata.proj_owner} `)
+                                     Owner: ${xdata.proj_owner}<br>
+                                     <img src="${pic}" width="200px">`)
+
+                marker.openPopup()
 
                 map.setView(latlng,14)
 
