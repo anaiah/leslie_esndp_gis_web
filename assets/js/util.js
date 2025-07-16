@@ -1159,7 +1159,7 @@ const util = {
                 //util.hideModal('loginModal',2000)    
                 
                 
-                if(data.grp_id=="1"){//business dev
+                if(data[0].grp_id=="1"){//business dev
                     location.href = './map.html'
                 
                 }else{
