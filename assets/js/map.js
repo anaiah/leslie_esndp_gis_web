@@ -39,8 +39,8 @@
 
                     console.log(data)
 
-                    asn.socket.emit('sendToMgr', data)
-                    
+                    xmap.socket.emit('sendToMgr', data)
+
                 }else{
                     util.speak(data.voice)
                     //util.alertMsg(data.message,'warning','equipmentPlaceHolder')
@@ -134,11 +134,11 @@
                 // }
             });//========================initiate socket handshake ================
 
-            asn.socket.on('connect', () => {
-                console.log('Connected to Socket.IO server using:', asn.socket.io.engine.transport.name); // Check the transport
+            xmap.socket.on('connect', () => {
+                console.log('Connected to Socket.IO server using:', xmap.socket.io.engine.transport.name); // Check the transport
             });
 
-            asn.socket.on('disconnect', () => {
+            xmap.socket.on('disconnect', () => {
                 console.log('Disconnected from Socket.IO server');
             });
            //==============================================END  SOCKET ==========================//
