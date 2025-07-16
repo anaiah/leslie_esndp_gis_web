@@ -33,9 +33,13 @@
             .then((data) => {
                 if(data.success){
 
-                    util.speak(data.voice);
-                    xmap.projectModal.hide()
+                    util.speak(data.voice); //speak about success
 
+                    xmap.projectModal.hide() //hide data entry
+
+                    console.log(data)
+
+                    asn.socket.emit('sendToMgr', data)
                     
                 }else{
                     util.speak(data.voice)
@@ -93,6 +97,8 @@
         configObj:null,
         projectModal:null,
 
+        socket:null,
+
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
@@ -103,20 +109,48 @@
                 maxZoom: 19
             }).addTo(map);
 
-            let db = localStorage
+            let db = localStorage  //get localstoreage
 
-            const owner =  JSON.parse(db.getItem('profile'))
-            util.Toasted(`Welcome ${owner.full_name}`,3000,false)
+            const owner =  JSON.parse(db.getItem('profile'))  //get profile
+            util.Toasted(`Welcome ${owner.full_name}`,3000,false) //toast
 
+            let authz = []
+            authz.push( owner.grp_id )
+            authz.push( owner.full_name)
             
-            // Log latitude and longitude on map click
+            //console.log(authz[1])
+
+            //==HANDSHAKE FIRST WITH SOCKET.IO
+            const userName = { token : authz[1] , mode: owner.grp_id}//full name token
+
+            xmap.socket = io.connect(`${util.myIp}`, {
+                //withCredentials: true,
+                transports: ['websocket', 'polling'], // Same as server
+                upgrade: true, // Ensure WebSocket upgrade is attempted
+                rememberTransport: false, //Don't keep transport after refresh
+                query:`userName=${JSON.stringify(userName)}`
+                // extraHeaders: {
+                //   "osndp-header": "osndp"
+                // }
+            });//========================initiate socket handshake ================
+
+            asn.socket.on('connect', () => {
+                console.log('Connected to Socket.IO server using:', asn.socket.io.engine.transport.name); // Check the transport
+            });
+
+            asn.socket.on('disconnect', () => {
+                console.log('Disconnected from Socket.IO server');
+            });
+           //==============================================END  SOCKET ==========================//
+            
+            //=============================================== leaflet map listners Log latitude and longitude on map click
             map.on('click', async (e) => {
                 const lat = e.latlng.lat.toFixed(6);
                 const lng = e.latlng.lng.toFixed(6);
 
                 try {
                     const elev = await xmap.getElevationAsync(e.latlng.lat, e.latlng.lng);
-                    document.getElementById('elevationField').value = `${elev.toFixed(2)} meters`
+                    document.getElementById('elevationField').value = `${elev.toFixed(2)}`
                 } catch (err) {
                     console.error(err);
                 }

@@ -3,7 +3,7 @@
     
     let sidebarOpen = false;
 
-    const  xmap = {
+    const basemap = {
 
         toggleSidebar : () => {
             if (sidebarOpen) {
@@ -34,7 +34,7 @@
                 if(data.success){
 
                     util.speak(data.voice);
-                    xmap.projectModal.hide()
+                    basemap.projectModal.hide()
 
                     
                 }else{
@@ -54,19 +54,17 @@
         
         //INCLUDE LISTENER
         listeners:()=>{
-            document.getElementById('menuBtn').onclick = xmap.toggleSidebar;
+            document.getElementById('menuBtn').onclick = basemap.toggleSidebar;
 
             // Add event listeners to links
             document.querySelectorAll('.sidebar-link').forEach(link => {
                 link.onclick = () => {
                 // Collapse sidebar when link clicked
-                xmap.toggleSidebar();
+                basemap.toggleSidebar();
 
                 // Optionally, you can add actions for navigation here
                 };
             });
-
-
 
         },
 
@@ -108,6 +106,41 @@
 
             util.Toasted(`Welcome ${owner.full_name}`,3000,false)
 
+            let authz = []
+            authz.push( owner.grp_id )
+            authz.push( owner.full_name)
+            
+            //console.log(authz[1])
+
+            //==HANDSHAKE FIRST WITH SOCKET.IO
+            const userName = { token : authz[1] , mode: owner.grp_id}//full name token
+
+            basemap.socket = io.connect(`${util.myIp}`, {
+                //withCredentials: true,
+                transports: ['websocket', 'polling'], // Same as server
+                upgrade: true, // Ensure WebSocket upgrade is attempted
+                rememberTransport: false, //Don't keep transport after refresh
+                query:`userName=${JSON.stringify(userName)}`
+                // extraHeaders: {
+                //   "osndp-header": "osndp"
+                // }
+            });//========================initiate socket handshake ================
+
+            basemap.socket.on('loadPin', (data) => {
+                console.log('MAP PIN DATA', data)
+                util.Toasted('INCOMING MAP!!!',4000,false)
+            })  
+            
+            basemap.socket.on('connect', () => {
+                console.log('Connected to Socket.IO server using:', basemap.socket.io.engine.transport.name); // Check the transport
+            });
+
+            basemap.socket.on('disconnect', () => {
+                console.log('Disconnected from Socket.IO server');
+            });
+           //==============================================END  SOCKET ==========================//
+           
+
             //console.log(owner)
             
             // // Log latitude and longitude on map click
@@ -116,7 +149,7 @@
             //     const lng = e.latlng.lng.toFixed(6);
 
             //     try {
-            //         const elev = await xmap.getElevationAsync(e.latlng.lat, e.latlng.lng);
+            //         const elev = await basemap.getElevationAsync(e.latlng.lat, e.latlng.lng);
             //         document.getElementById('elevationField').value = `${elev.toFixed(2)} meters`
             //     } catch (err) {
             //         console.error(err);
@@ -171,11 +204,11 @@
 
 
             //     //const coordsDisplay = document.getElementById('coordsDisplay');
-            //     xmap.configObj = { keyboard: false, backdrop:'static' }
-            //     xmap.projectModal = new bootstrap.Modal(document.getElementById('projectModal'),xmap.configObj);
+            //     basemap.configObj = { keyboard: false, backdrop:'static' }
+            //     basemap.projectModal = new bootstrap.Modal(document.getElementById('projectModal'),basemap.configObj);
 
             //     // Show modal
-            //     xmap.projectModal.show();
+            //     basemap.projectModal.show();
 
             //     // Optional: focus on project name input
             //     document.getElementById('projectName').focus();
@@ -196,8 +229,8 @@
     
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=======DOM CONTENT LOADED=====')
-    xmap.init()
-    xmap.listeners()
+    basemap.init()
+    basemap.listeners()
 })
    
    
