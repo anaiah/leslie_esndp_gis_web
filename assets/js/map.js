@@ -104,7 +104,10 @@
             }).addTo(map);
 
             let db = localStorage
+
             const owner =  JSON.parse(db.getItem('profile'))
+            til.Toasted(`Welcome ${owner.full_name}`,3000,false)
+
             
             // Log latitude and longitude on map click
             map.on('click', async (e) => {
