@@ -138,7 +138,7 @@
                 let lon = parseFloat(xdata.lon)
 
                 console.log(lat,lon)
-                let latlng = L.latLng( lat, lon)
+                let latlng = L.latLng( lat, lon) 
                 let marker = L.marker(latlng).addTo(map)
                 marker.bindPopup(`<b>Project : ${xdata.project}<br>
                                      Owner: ${xdata.proj_owner} `)
