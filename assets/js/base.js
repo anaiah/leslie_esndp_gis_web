@@ -130,6 +130,17 @@
             basemap.socket.on('loadPin', (data) => {
                 console.log('MAP PIN DATA', data)
                 util.Toasted('INCOMING MAP!!!',4000,false)
+
+                let lat = parseFloat(data.info[0].lat)
+                let lon = parseFloat(data.info[0].lon)
+
+                let latlng = L.latlng( lat, lon)
+                let marker = L.marker(latlng).addTo(map)
+                marker.bindPopup(`<b>Project : ${data.info[0].project}<br>
+                                     Owner: ${data.info[0].proj_owner} `)
+
+                map.setView(latlng,14)
+                
             })  
 
             basemap.socket.on('connect', () => {
