@@ -99,6 +99,8 @@
 
         socket:null,
 
+        myIp : "https://esndp-gis-jku4q.ondigitalocean.app",
+
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
@@ -123,7 +125,7 @@
             //==HANDSHAKE FIRST WITH SOCKET.IO
             const userName = { token : authz[1] , mode: owner.grp_id}//full name token
 
-            xmap.socket = io.connect(`${util.myIp}`, {
+            xmap.socket = io.connect(`${xmap.myIp}`, {
                 //withCredentials: true,
                 transports: ['websocket', 'polling'], // Same as server
                 upgrade: true, // Ensure WebSocket upgrade is attempted
