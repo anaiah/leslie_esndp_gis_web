@@ -99,6 +99,18 @@
         .leaflet-marker-icon.fade-in{
             opacity: 1;
         }
+
+        #chart-card{
+            position:fixed;
+            top:20px;
+            right:20px;
+            width:3300px;
+            height:auto;
+            background-color: rgba(255,255,255,0.7);
+            padding:20px;
+            box-sizing:border-box;
+            z-index:1000;
+        }
     </style>
     </head>
 
@@ -130,6 +142,11 @@
         <div class="card h-100 p-3 bg-light">
             <div id="map"></div>
             <!-- <div class="mt-2" id="coordsDisplay">Click on the map to see coordinates</div> -->
+        </div>
+
+        <div id="chart-card">
+            <h5>Month-to-Date</h5>
+            <canvas id="myChart" width="400" height="200"></canvas>
         </div>
         </div>
     </div>
