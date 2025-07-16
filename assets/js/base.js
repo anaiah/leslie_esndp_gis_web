@@ -105,6 +105,8 @@
 
             let db = localStorage
             const owner =  JSON.parse(db.getItem('profile'))
+
+            console.log(owner)
             
             // Log latitude and longitude on map click
             map.on('click', async (e) => {

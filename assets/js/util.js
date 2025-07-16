@@ -1153,18 +1153,18 @@ const util = {
   
                 util.speak(`Welcome, ${data[0].full_name}.. !`)
                 
-                util.alertMsg(`Welcome, ${data[0].full_name}.. !`,'success','loginPlaceHolder')
+                util.alertMsg(`Welcome, ${data[0].full_name} !`,'success','loginPlaceHolder')
                 
                 //hide modalbox
                 //util.hideModal('loginModal',2000)    
                 
                 
-                // if(data.grp_id=="1"){//business dev
-                //     location.href = './map.html'
+                if(data.grp_id=="1"){//business dev
+                    location.href = './map.html'
                 
-                // }else{
-                //     location.href = './base.html'
-                // }//eif
+                }else{
+                    location.href = './base.html'
+                }//eif
                         
             }else{
                 util.speak('DATA NOT FOUND')
