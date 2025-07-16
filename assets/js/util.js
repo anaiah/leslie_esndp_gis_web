@@ -1153,7 +1153,7 @@ const util = {
   
                 util.speak(`Welcome, ${data[0].full_name}.. !`)
                 
-                util.alertMsg(data[0].message,'success','loginPlaceHolder')
+                util.alertMsg(`Welcome, ${data[0].full_name}.. !`,'success','loginPlaceHolder')
                 
                 //hide modalbox
                 //util.hideModal('loginModal',2000)    
