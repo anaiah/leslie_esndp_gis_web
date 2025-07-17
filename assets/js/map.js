@@ -100,8 +100,8 @@
 
         socket:null,
 
-        myIp : "https://esndp-gis-jku4q.ondigitalocean.app",
-
+        myIp : "http://10.202.213.221:10000",//"https://esndp-gis-jku4q.ondigitalocean.app",
+        
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 

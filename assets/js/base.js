@@ -88,14 +88,193 @@
             });
         },
 
+        getmtdPerformance: async()=>{
+
+            await fetch(`${basemap.myIp}/mtdperformance`,{
+                cache:'reload'
+            })
+            .then( (res) => res.json() )
+
+            .then( (results)  => {
+
+                console.log('mtd data ',results )
+
+                basemap.loadChart( results )//load dta results to map
+
+                const series = [
+                    { name: "For Approval", data: [] },
+                    { name: "Approved", data: [] },
+                    { name: "Opened", data: [] }
+                ];
+
+                
+                results.forEach(item => {
+                    series[0].data.push(parseInt(item.approval));
+                    series[1].data.push(parseInt(item.approved));
+                    series[2].data.push(parseInt(item.opened));
+                });
+
+
+                basemap.chart1.updateSeries(series);
+
+                let xcat = []
+            
+                results.forEach(item => {
+                    if (!xcat.includes(item.owner_name.trim())) {
+                        xcat.push(item.owner_name.trim());
+                    }
+                });
+
+                console.log(xcat)
+                basemap.chart1.updateOptions({ 
+                    xaxis: { categories: xcat }
+                });
+
+
+            })	
+            .catch((error) => {
+                //util.Toast(`Error:, ${error}`,1000)
+                console.error('Error:', error)
+            })    
+        
+        },
+
+        chart1:null,
+
+        //load chart
+        loadChart: ()=>{
+            console.log('loading from  controller  chart.....')
+            // Initialize series
+           
+
+
+            //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
+            let colors = [ '#0277bd','#d84315',  '#2e7d32']
+                    
+            // Fisher-Yates shuffle
+            // for (let i = colors.length - 1; i > 0; i--) {
+            //     const j = Math.floor(Math.random() * (i + 1));
+            //     [colors[i], colors[j]] = [colors[j], colors[i]]; // swap elements
+            // }//endfor   
+
+            // Map data
+           
+
+           // console.log('categories',categories)
+
+
+            var options = {
+                series:[], 
+                colors:colors,
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    width: 400,
+                    redrawOnParentResize: false,
+                    redrawOnWindowResize: false,
+                            
+                },
+
+                
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            position: 'top',
+                            //orientation:'vertical'
+                        }
+                    }
+                },
+                
+                dataLabels: {
+                    enabled: true,
+                    dropShadow: {
+                        enabled: true,
+                        left: 1,
+                        top: 1,
+                        opacity: 0.5
+                    },
+                    formatter: function (val) {
+                        if (val >= 1000000) {
+                            return (val / 1000000).toFixed(1) + 'M';
+                        } else if (val >= 1000) {
+                            return (val / 1000).toFixed(1) + 'K';
+                        }
+                        
+                        return val;
+                    },
+                    offsetY:-20,
+                    style: {
+                        fontSize: "12px",
+                        colors: ["#d84315","#00695c"]
+                    },
+                
+                },
+                
+                stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+                },
+                xaxis: {
+                    categories: [],
+
+                    title: {
+                        text: 'Store Status',
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'bold',
+                            fontFamily: 'Helvetica, Arial, sans-serif',
+                            color: '#6699ff' // set your desired color
+                        }
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: '',
+                        style: {
+                            fontSize: '10px',
+                            fontWeight: 'bold',
+                            fontFamily: 'Helvetica, Arial, sans-serif',
+                            color: '#6699ff' // set your desired color
+                        }
+                    }    
+                },
+                fill: {
+                    opacity: 1
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val 
+                        }
+                }
+                }
+    
+            } //end options
+        
+            basemap.chart1 = new ApexCharts(document.querySelector("#myChart"), options);
+            basemap.chart1.render();
+
+            
+            // Later, update your chart
+            
+
+            
+        },//====== end chart
+
         configObj:null,
         projectModal:null,
 
-        myIp : "https://esndp-gis-jku4q.ondigitalocean.app",
+        myIp : "http://10.202.213.221:10000",//"https://esndp-gis-jku4q.ondigitalocean.app",
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
         init : () =>{
+
+
+            //get initial performance of Lease people
+            basemap.getmtdPerformance()
+
             // Initialize Leaflet map
             const map = L.map('map').setView([ 14.4594 , 121.0431 ], 18); //18 zoom in
              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -127,6 +306,7 @@
                 // }
             });//========================initiate socket handshake ================
 
+            //=====SOCKET.IO=============
             basemap.socket.on('loadPin', (data) => {
                 console.log('MAP PIN DATA', data)
 
@@ -156,6 +336,9 @@
                 marker.openPopup()
 
                 map.setView(latlng,14)
+
+                basemap.getmtdPerformance() //===== get data  again for the Team performance
+
 
             })  
 
