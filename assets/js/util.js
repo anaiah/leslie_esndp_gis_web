@@ -36,6 +36,7 @@ let xloginmodal,
 let voices = []
 
 //first init delete all localstorage
+db	
 const util = {
 	
 	scrollsTo:(cTarget)=>{
