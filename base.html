@@ -12,6 +12,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+
     <!---//toastify cdn-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
@@ -40,6 +42,7 @@
         width: 250px;
         height: 100%;
         background: #333;
+        background-image: url('./assets/images/backgrounds/win.jpg');
         color: white;
         transition: left 0.3s;
         padding-top: 60px;
@@ -119,6 +122,37 @@
         margin-bottom: 10px;
         color: #333; /* Customize text color */
         }
+
+        #sidebarnav {
+        list-style: none;              /* Remove bullets */
+        padding: 0;
+        margin: 20px 0;
+        background: transparent;       /* Make background transparent */
+        /* optional: remove border and shadow if any */
+        }
+        #sidebarnav li {
+        padding-left: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        #sidebarnav a {
+        display: flex;                 /* align icon and text if any */
+        align-items: center;
+        padding: 12px 20px;
+        color: #fff;                   /* White font color */
+        text-decoration: none;          /* No underline */
+        background: transparent;         /* No background on links */
+        box-shadow: none;                /* Remove hover shadow if any */
+        transition: none;               /* Disable hover transition effects */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .menu-section-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        }
+
+
     </style>
     </head>
 
@@ -130,7 +164,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand ms-auto me-3" href="javascript:void(0)" id="brandLogo">
-            <img src="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/64896056751d0f55b4245ca4_Hi-Res%20Leslie%20Logo.png"  height="30px" alt="" />
+            <img id="profile_pic" src="./assets/images/profile/aperez.jpg" class="rounded" height="37px" alt="" />
         </a>
         </div>
     </nav>
@@ -138,10 +172,36 @@
     <!-- Sidebar -->
     <div id="sidebar">
         <h2 class="mt-2 text-center"><img src="https://cdn.prod.website-files.com/648956d3510c7c1e8838a0d3/64896056751d0f55b4245ca4_Hi-Res%20Leslie%20Logo.png"  height="50px" alt="" /></h2>
-        <a href="#" class="sidebar-link">Home</a>
+        <ul id="sidebarnav" class="sidebar-menu">
+            <li class="nav-small-cap">
+                <i class="nav-small-cap-icon"></i>
+                <span class="menu-section-label">CHART</span>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="javascript:basemap.getmtdPerformance()" aria-expanded="false">
+                <i class="ti ti-layout-dashboard"></i>
+                <span class="menu-text">MTD</span>
+                </a>
+            </li>
+
+            <li class="nav-small-cap">
+                <i class="nav-small-cap-icon"></i>
+                <span class="menu-section-label">ACCESS</span>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="./" aria-expanded="false">
+                <i class="ti ti-logout"></i>
+                <span class="menu-text">Logout</span>
+                </a>
+            </li>
+        </ul>
+        <!-- <a href="#" class="sidebar-link">Home</a>
         <a href="#" class="sidebar-link">About</a>
         <a href="#" class="sidebar-link">Services</a>
         <a href="#" class="sidebar-link">Contact</a>
+     -->
+    
     </div>
 
     <!-- Main content container, fills entire page -->

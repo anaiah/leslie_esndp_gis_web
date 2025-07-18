@@ -89,7 +89,7 @@
         },
 
         getmtdPerformance: async()=>{
-
+            util.speak('Loading chart...!')
             await fetch(`${basemap.myIp}/mtdperformance`,{
                 cache:'reload'
             })
@@ -265,8 +265,8 @@
         configObj:null,
         projectModal:null,
 
-        //myIp : //"http://10.202.213.221:10000",//
-        myIp: "https://esndp-gis-jku4q.ondigitalocean.app",
+        myIp : "http://10.202.213.221:10000",
+        //myIp: "https://esndp-gis-jku4q.ondigitalocean.app",
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
@@ -433,9 +433,13 @@
                 
             // // coordsDisplay.textContent = `Latitude: ${lat}, Longitude: ${lng}`;
             // });
+
+            //===load profile pic
+            document.getElementById('profile_pic').src = `./assets/images/profile/${owner.pic}`
+
         }//end init()
 
-
+        
     }//===end obj
 
     
