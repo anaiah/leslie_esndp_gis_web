@@ -1,3 +1,4 @@
+
 /*
 Author: Carlo Dominguez
 1/31/2023
@@ -6,10 +7,6 @@ this is for utilities
 modals,forms,utilities
 
 */
-
-//const myIp = "http://10.202.213.221:10000"
-const myIp  = "https://esndp-gis-jku4q.ondigitalocean.app"
-
 const requirements = document.querySelectorAll(".requirements")
 const specialChars = "!@#$%^&*()-_=+[{]}\\| :'\",<.>/?`~"
 const numbers = "0123456789"
@@ -1143,34 +1140,32 @@ const util = {
             return response.json();
         })
         .then((data) => {
-            console.log('data ko ', data )
+            console.log('data ko ', data)
             console.log(`here data ${JSON.stringify(data)}`)
             
-            if(data){
+            if(data.length > 0){
 
+                util.alertMsg(`Welcome, ${data[0].full_name} !`,'success','loginPlaceHolder')
+                
                 db.setItem('profile', JSON.stringify(data[0]) )
   
                 util.speak(`Welcome, ${data[0].full_name}.. !`)
                 
-                util.alertMsg(`Welcome, ${data[0].full_name} !`,'success','loginPlaceHolder')
                 
                 //hide modalbox
                 //util.hideModal('loginModal',2000)    
-                
-                
                 if(data[0].grp_id=="1"){//business dev
                     location.href = './map.html'
                 
                 }else{
                     location.href = './base.html'
                 }//eif
-                        
-            }else{
+            }            
                 util.speak('DATA NOT FOUND')
-                util.alertMsg(data.message,'warning','loginPlaceHolder')
-                console.log('notfound',data.message)
+                console.log(data)
+                util.alertMsg('USER NOT FOUND!','warning','loginPlaceHolder')
+            
                 return false
-            }
             
         })
         .catch((error) => {

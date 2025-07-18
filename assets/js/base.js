@@ -90,7 +90,7 @@
 
         getmtdPerformance: async()=>{
             util.speak('Loading chart...!')
-            await fetch(`${basemap.myIp}/mtdperformance`,{
+            await fetch(`${myIp}/mtdperformance`,{
                 cache:'reload'
             })
             .then( (res) => res.json() )
@@ -265,8 +265,6 @@
         configObj:null,
         projectModal:null,
 
-        //myIp : "http://10.202.213.221:10000",
-        myIp: "https://esndp-gis-jku4q.ondigitalocean.app",
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
@@ -296,7 +294,7 @@
             //==HANDSHAKE FIRST WITH SOCKET.IO
             const userName = { token : authz[1] , mode: owner.grp_id}//full name token
 
-            basemap.socket = io.connect(`${basemap.myIp}`, {
+            basemap.socket = io.connect(`${myIp}`, {
                 //withCredentials: true,
                 transports: ['websocket', 'polling'], // Same as server
                 upgrade: true, // Ensure WebSocket upgrade is attempted
