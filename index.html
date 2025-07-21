@@ -216,7 +216,10 @@
     const main = {
       
       formValidate:()=>{
+        //delete muna profile
+        db.removeItem('profile')
         
+
         util.loadFormValidation('#loginForm')
         // util.loadFormValidation('#newempForm')
         // util.modalListeners('newempModal')
