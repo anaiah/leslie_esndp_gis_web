@@ -20,7 +20,7 @@ left: -250px;
 width: 250px;
 height: 100%;
 background: #333;
-background-image: url('./assets/images/backgrounds/win.jpg');
+background-image: url('../images/backgrounds/win.jpg');
 color: white;
 transition: left 0.3s;
 padding-top: 60px;
@@ -164,51 +164,7 @@ color: #0056b3;
     color:green;
 }
 
-.wow-div-icon {
-    position: relative;
-    width: 30px;
-    height: 42px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    font-size: 12px;
-}
 
-.wow-marker-pin {
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(to bottom, #6a5acd, #483d8b); /* Gradient */
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-}
-
-.wow-marker-pin-red {
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(to bottom, #c80c0c, #f02626); /* Gradient */
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-}
-
-
-.wow-div-icon .wow-awesome {
-    position: relative;
-    z-index: 2;
-    /* Add any other text styling here */
-}
 .tabler-icon i {  /* Target the <i> element INSIDE .wow-div-icon */
     font-size: 25px; /* Now this will work!  Adjust as needed */
     /* Add other styles that apply to ALL Tabler icons within wow-div-icon here */
@@ -221,17 +177,18 @@ color: #0056b3;
     color:red;
     font-size: 35px !important;
 }
+.tabler-blood-red{
+    color:#8B0000;
+}
 .tabler-green{
     /* font-size:13px; */
     color:green
-
 }
 .tabler-flag-green{
     /* font-size:13px; */
     color:green;
     font-size: 35px !important;
 }
-
 .tabler-bluer{
     color:blue;
     font-size: 40px !important;

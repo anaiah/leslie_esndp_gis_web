@@ -46,7 +46,6 @@
                     // Reset the form
                     form.reset();
 
-
                     xmap.projectModal.hide() //hide data entry
 
                     console.log(data)
@@ -59,7 +58,6 @@
                     
                     return
                 }//eif
-                
                 
             })
             .catch((error) => {
@@ -82,9 +80,6 @@
                 // Optionally, you can add actions for navigation here
                 };
             });
-
-
-
         },
 
         getElevationAsync: (lat, lng)=> {
@@ -126,8 +121,7 @@
             document.getElementById('lonField').value = lon 
             
             document.getElementById('projectName').focus();
-                
-
+        
         },
 
         //INIT 
@@ -141,7 +135,10 @@
             let db = localStorage  //get localstoreage
 
             const owner =  JSON.parse(db.getItem('profile'))  //get profile
-            util.Toasted(`Welcome ${owner.full_name}`,3000,false) //toast
+
+            util.Toasted(`Welcome ${owner.full_name}`,3000,false) //Welcome Message
+
+            document.getElementById('profile_pic').src = `./assets/images/profile/${owner.pic}`
 
             let authz = []
             authz.push( owner.grp_id )

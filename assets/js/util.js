@@ -192,7 +192,6 @@ const util = {
             formData.append('file', myInput.files[0]);     
             myInput.files[0].name ='EOEXPERIMENT.pdf'
 
-
             console.log('imagePost() myinput', myInput.files[0])
 
             ////console.log(formData)
@@ -1147,13 +1146,15 @@ const util = {
                 }else{
                     location.href = './base.html'
                 }//eif
-            }            
+            }else{
                 util.speak('DATA NOT FOUND')
                 console.log(data)
                 util.alertMsg('USER NOT FOUND!','warning','loginPlaceHolder')
             
                 return false
             
+            }          
+                
         })
         .catch((error) => {
             ///util.Toast(`Error:, ${error}`,1000)

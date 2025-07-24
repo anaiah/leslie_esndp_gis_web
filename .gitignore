@@ -3,3 +3,6 @@
 *workspace*
 ui*.*
 *.json
+/assets/js/ipconfig.*
+assets/js/ipconfig.js
+assets/js/ipconfig.js

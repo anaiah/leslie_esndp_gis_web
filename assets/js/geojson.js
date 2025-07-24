@@ -78,6 +78,7 @@ const gjson =  {
                 projelevation = `${adata[0].elevation}`,
                 projdistance = `${ est.distanceKm}`
 
+				//======filter the array as  it iterates========
 				const containsWord = arrayBrand.some(element => {
 					return element.toLowerCase().includes(est.name.substring(0,5).toLowerCase());
 				});
@@ -113,8 +114,8 @@ const gjson =  {
 
 						case "kfc":
 							xcolor='green'
-							xclass='tabler-green'
-							xicon =  'ti-map-pin-filled'
+							xclass='tabler-blood-red'
+							xicon =  'ti-flag-3-filled'
 						break
 
 						case "mcdon":
