@@ -25,11 +25,12 @@ const gjson =  {
 				popupAnchor:[0,-42]
 			});
 			
-// 		html: `<i class="fa fa-circle fa-stack-2x"></i>
-//   <i class="fa fa-street-view fa-stack-1x fa-inverse"></i>`,
-	
 		
 		let zmarker =L.marker(latlng, {icon:mainIcon}).addTo(map)
+
+		let acquisitionLatLon = zmarker.getLatLng()
+
+		console.log('***MAIN MARKER LETLNG()****',zmarker.getLatLng())
 
 		let markerElement = zmarker._icon;
 
@@ -53,7 +54,7 @@ const gjson =  {
 			fillOpacity: 0.2       // Fill opacity (0 to 1)
 		};
 
-		const radius=1000
+		const radius=1400
 
 		// 4. Create the circle object
 		var circle = L.circle( latlng , radius, circleOptions);
@@ -89,7 +90,7 @@ const gjson =  {
 				
 				if (containsWord) {
 
-					console.log( '*',est.name.substring(0,7).toLowerCase())
+					////console.log( '*',est.name.substring(0,7).toLowerCase())
 
 					switch(est.name.substring(0,7).toLowerCase()){
 						case "angel's":
@@ -112,6 +113,17 @@ const gjson =  {
 							xclass='tabler-bluer'
 							xicon="ti-flag-3-filled"
 							xbrand="MINUTE BURGER"
+							
+							let iconLatLon = L.latLng( parseFloat(est.lat), parseFloat(est.lon) ) 
+							let _distance = acquisitionLatLon.distanceTo( iconLatLon)
+						    
+							if(_distance <= 1400){
+
+								map.setView( L.latLng( parseFloat(est.lat), parseFloat(est.lon) ) , 20)
+							
+								util.Toasted(`POSSIBLE BRAND OVERLAP ${xbrand} WITHIN ${projdistance} Km. !!!`,7000,false)
+							}
+								
 							
 						break
 
@@ -181,17 +193,10 @@ const gjson =  {
 							xbrand = 'MCDO'
 						break
 
-						// default:
-						// 	xcolor='blue'
-						// 	xclass='tabler-blue'
-						// 	xicon =  'ti-map-pin-filled'
-						// 	xbrand = est.name.substring(0,6).toUpperCase()
-						// break
-
 					}
 				} else {
 
-					console.log( est.name.substring(0,7).toLowerCase())
+					//// console.log( est.name.substring(0,7).toLowerCase())
 
 					xcolor=''
 					xclass='null'
