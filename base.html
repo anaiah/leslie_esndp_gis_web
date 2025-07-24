@@ -14,144 +14,18 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
+    <script src="https://kit.fontawesome.com/c8bdb13a5c.js" crossorigin="anonymous"></script>
+  
     <!---//toastify cdn-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     
+    <link rel="stylesheet" href="./assets/css/map.css"/>
+
     <style>
-        body {
-        background-color: #fff;
-        margin: 0;
-        padding: 0;
-        }
-
-        .navbar {
-        /* box-shadow: 0 4px 2px -2px gray; */
-        box-shadow: 0 12px 24px rgba(74, 73, 73, 0.4);
-
-        z-index: 1030;
-        position: fixed;
-        width: 100%;
-        }
-
-        #sidebar {
-        position: fixed;
-        top: 0;
-        left: -250px;
-        width: 250px;
-        height: 100%;
-        background: #333;
-        background-image: url('./assets/images/backgrounds/win.jpg');
-        color: white;
-        transition: left 0.3s;
-        padding-top: 60px;
-        z-index: 1020;
-        overflow: auto;
-        }
-
-        #sidebar a {
-        color: white;
-        padding: 10px;
-        display: block;
-        cursor: pointer;
-        }
-
-        /* This class is for expanding the card container to fill the page */
-        #main {
-        position: absolute;
-        top: 56px; /* height of navbar */
-        left: 0;
-        width: 100%;
-        height: calc(100% - 56px);
-        transition: margin-left 0.3s, width 0.3s, height 0.3s, top 0.3s;
-        }
-
-        /* When sidebar expanded, shift main content */
-        #main.sidebar-open {
-        margin-left: 250px;
-        width: calc(100% - 250px);
-        height: calc(100% - 56px);
-        top: 56px;
-        }
-
-        /* Make the card occupy full container */
-        .full-page {
-        height: 100%;
-        width: 100%;
-        }
-
-        #map {
-        height: 100%;
-        width: 100%;
-        }
-
-        .card {
-        height: 100%;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        /* Remove default margin for body to extend content */
-        body, html {
-        height: 100%;
-        margin: 0;
-        }
-
-        .leaflet-marker-icon{
-            opacity:0;
-            transition:opacity 0.9s  ease-in-out;
-        }
-        .leaflet-marker-icon.fade-in{
-            opacity: 1;
-        }
-
-       .chart-card {
-        position: absolute; /* Absolute positioning to overlay the map */
-        top: 10%; /* Adjust as needed */
-        right: 30px; /* Aligns card to the right */
-        width: auto; /* 20% of the width */
-        background-color: rgba(255, 255, 255, 0.6); /* Transparent white background */
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-        border-radius: 8px; /* Rounded corners */
-        overflow: hidden; /* Ensures content doesn't spill out */
-        z-index: 1000;
-        }
-
-        #chart-card h5 {
-        margin-bottom: 10px;
-        color: #333; /* Customize text color */
-        }
-
-        #sidebarnav {
-        list-style: none;              /* Remove bullets */
-        padding: 0;
-        margin: 20px 0;
-        background: transparent;       /* Make background transparent */
-        /* optional: remove border and shadow if any */
-        }
-        #sidebarnav li {
-        padding-left: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        #sidebarnav a {
-        display: flex;                 /* align icon and text if any */
-        align-items: center;
-        padding: 12px 20px;
-        color: #fff;                   /* White font color */
-        text-decoration: none;          /* No underline */
-        background: transparent;         /* No background on links */
-        box-shadow: none;                /* Remove hover shadow if any */
-        transition: none;               /* Disable hover transition effects */
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .menu-section-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        }
-
+       
 
     </style>
     </head>
@@ -179,8 +53,27 @@
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="javascript:basemap.getmtdPerformance()" aria-expanded="false">
-                <i class="ti ti-layout-dashboard"></i>
-                <span class="menu-text">MTD</span>
+                <i class="ti ti-chart-bar"></i>
+                <span class="menu-text">MTD Load</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
+                <i id='xclass' class="ti ti-graph-off"></i>
+                <span id='toggleChartControl' class="menu-text">MTD Hide</span>
+                </a>
+            </li>
+
+            <li class="nav-small-cap">
+                <i class="nav-small-cap-icon"></i>
+                <span class="menu-section-label">STORE PROJECTS</span>
+            </li>
+
+            <li class="sidebar-item">
+                <!-- <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#projectModal" aria-expanded="false"> -->
+                <a class="sidebar-link" href="javascript:basemap.getProjects()" aria-expanded="false">
+                <i class="ti ti-eye-pin"></i>
+                <span class="menu-text">View</span>
                 </a>
             </li>
 
@@ -214,13 +107,46 @@
 
         
         </div>
-
-        <div id="chart-card" class="chart-card position-absolute">
-            <h5>Month-to-Date</h5>
-            <div id="myChart" class="table-responsive" width="400" height="300"></div>
-        </div>
+            <!-- Toggle control inside the container -->
+            <a href="javascript:void(0)" id="toggleChartControl" class="text-primary mb-2 d-inline-block">Hide Chart</a>
+    
+            <div id="chart-card" class="chart-card position-absolute">
+                <h5>Month-to-Date</h5>
+                <div id="myChart" class="table-responsive" width="400" height="300"></div>
+            </div>
+        
     </div>
     <!-- =================================MODALS=================================== -->
+    <!-- for viewing projects -->
+    <!-- Modal -->
+    <div class="modal fade" id="projectlistModal" tabindex="-1" aria-labelledby="projectlistModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-width-dialog  modal-dialog-centered  modal-dialog-scrollable">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="projectlistModalLabel">Project Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <!-- Table to show project info -->
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Owner</th>
+                <th>Created</th>
+                <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="projectTableBody">
+                <!-- Data will go here -->
+                <!-- You'll fill this dynamically with JavaScript or server-side -->
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    </div>
 
     <!-- Add this modal HTML somewhere after the body content -->
     <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
@@ -282,21 +208,23 @@
     </div>
     </div>
 
-    <!-- Scripts -->
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2KmdjMR6loRYvAAxAs84ioWrpYlPgzco&libraries=visualization">
-    </script>
-
+    
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js?ver=12"></script>
 
       <!-- toastify -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <script src="./assets/js/ipconfig.js?v=2"></script>
     <script src="./assets/js/util.js?v=2"></script>
+    
+    
     <script src="./assets/js/base.js?v=2"></script>
 
+    <script src="./assets/js/geojson.js?v=2"></script>
+    
 </body>
 </html>

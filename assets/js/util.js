@@ -1098,26 +1098,13 @@ const util = {
                 break
 				
 				case "#projectForm":
-                    // //console.log('newsiteform data ', objfrm)
-                    // xmsg = "<div><i class='fa fa-spinner fa-pulse' ></i>  Saving to Database please wait...</div>"
-                    // util.alertMsg( xmsg,'danger','newsitePlaceHolder')
-                    
-                    // const isave = document.getElementById('i-save')
-                    // const btnsave = document.getElementById('mall-save-btn')
-                    // isave.classList.remove('fa-floppy-o')
-                    // isave.classList.add('fa-refresh')
-                    // isave.classList.add('fa-spin')
-                    // btnsave.disabled = true
-                //   const fileInput = document.getElementById('image_upload_file');
-
-                // if (fileInput.files.length > 0) {
-                // formdata.append('image_upload_file', fileInput.files[0], fileInput.files[0].name);
-                // }
+                    const btn = document.getElementById('save-btn')
+                    btn.innerHTML = 'Saving... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+                    btn.disabled = true;
   
                    xmap.newsitePost(frm,frmModal,`${myIp}/newsitepost`,formdata )
-                    //util.newsitePost(frm,frmModal,`https://localhost:10000/newsitepost/${util.formatDate()}`,objfrm )
                     
-                    console.log('==posting newSiteModal data ==', formdata);
+                   console.log('==posting newSiteModal data ==', formdata);
 				break;
 
                 case "#commentsForm":

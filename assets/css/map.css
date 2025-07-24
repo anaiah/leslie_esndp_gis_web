@@ -1,0 +1,273 @@
+body {
+background-color: #fff;
+margin: 0;
+padding: 0;
+}
+
+.navbar {
+/* box-shadow: 0 4px 2px -2px gray; */
+box-shadow: 0 12px 24px rgba(74, 73, 73, 0.4);
+
+z-index: 1030;
+position: fixed;
+width: 100%;
+}
+
+#sidebar {
+position: fixed;
+top: 0;
+left: -250px;
+width: 250px;
+height: 100%;
+background: #333;
+background-image: url('./assets/images/backgrounds/win.jpg');
+color: white;
+transition: left 0.3s;
+padding-top: 60px;
+z-index: 1020;
+overflow: auto;
+}
+
+#sidebar a {
+color: white;
+padding: 10px;
+display: block;
+cursor: pointer;
+}
+
+/* This class is for expanding the card container to fill the page */
+#main {
+position: absolute;
+top: 56px; /* height of navbar */
+left: 0;
+width: 100%;
+height: calc(100% - 56px);
+transition: margin-left 0.3s, width 0.3s, height 0.3s, top 0.3s;
+}
+
+/* When sidebar expanded, shift main content */
+#main.sidebar-open {
+margin-left: 250px;
+width: calc(100% - 250px);
+height: calc(100% - 56px);
+top: 56px;
+}
+
+/* Make the card occupy full container */
+.full-page {
+height: 100%;
+width: 100%;
+}
+
+#map {
+height: 100%;
+width: 100%;
+}
+
+.card {
+height: 100%;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Remove default margin for body to extend content */
+body, html {
+height: 100%;
+margin: 0;
+}
+
+.leaflet-marker-icon{
+    opacity:5;
+    transition:opacity 0.9s  ease-in-out;
+}
+.leaflet-marker-icon.fade-in{
+    opacity: 1;
+}
+
+.chart-card {
+    position: absolute; /* Absolute positioning to overlay the map */
+    top: 10%; /* Adjust as needed */
+    right: 30px; /* Aligns card to the right */
+    width: auto; /* 20% of the width */
+    background-color: rgba(255, 255, 255, 0.6); /* Transparent white background */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensures content doesn't spill out */
+    z-index: 1000;
+    transition: transform 0.5s ease-in-out;
+}
+
+.chart-hide {
+    transform: translateX(100%);
+}
+
+#chart-card h5 {
+margin-bottom: 10px;
+color: #333; /* Customize text color */
+}
+
+#sidebarnav {
+list-style: none;              /* Remove bullets */
+padding: 0;
+margin: 20px 0;
+background: transparent;       /* Make background transparent */
+/* optional: remove border and shadow if any */
+}
+#sidebarnav li {
+padding-left: 20px;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+#sidebarnav a {
+display: flex;                 /* align icon and text if any */
+align-items: center;
+padding: 12px 20px;
+color: #fff;                   /* White font color */
+text-decoration: none;          /* No underline */
+background: transparent;         /* No background on links */
+box-shadow: none;                /* Remove hover shadow if any */
+transition: none;               /* Disable hover transition effects */
+text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.menu-section-label  {
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+.menu-text{
+font-size: 0.9rem;
+font-weight: 600;
+padding-left: 5px;
+    
+}
+
+.custom-width-dialog {
+max-width: 80%; /* or 900px, 1000px, or any width you prefer */
+}
+
+.show-on-map-link {
+display: inline-block;
+margin-top: 4px;
+padding-left: 5px;
+font-size: 13px;
+color: #007bff;
+text-decoration: underline;
+cursor: pointer;
+}
+.show-on-map-link:hover {
+color: #0056b3;
+}
+.proj-class{
+    padding-left: 5px;
+    font-size:10px;
+    color:green;
+}
+
+.wow-div-icon {
+    position: relative;
+    width: 30px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
+
+.wow-marker-pin {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(to bottom, #6a5acd, #483d8b); /* Gradient */
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.wow-marker-pin-red {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(to bottom, #c80c0c, #f02626); /* Gradient */
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+
+.wow-div-icon .wow-awesome {
+    position: relative;
+    z-index: 2;
+    /* Add any other text styling here */
+}
+.tabler-icon i {  /* Target the <i> element INSIDE .wow-div-icon */
+    font-size: 25px; /* Now this will work!  Adjust as needed */
+    /* Add other styles that apply to ALL Tabler icons within wow-div-icon here */
+    /* transform: translateX(-50%); */
+    /* z-index: 1; */
+    /* animation: pulse 2s infinite; Apply the animation */
+}
+
+.tabler-red{ 
+    color:red;
+    font-size: 35px !important;
+}
+.tabler-green{
+    /* font-size:13px; */
+    color:green
+
+}
+.tabler-flag-green{
+    /* font-size:13px; */
+    color:green;
+    font-size: 35px !important;
+}
+
+.tabler-bluer{
+    color:blue;
+    font-size: 40px !important;
+}
+
+.tabler-yellow{
+    color:#FFDA00;
+    font-size: 35px !important;
+}
+.tabler-blue{
+    color:rgb(34, 93, 152);
+}
+.fa-div-icon {
+    position: relative;
+    width: 30px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color:blue; 
+    font-size:8px;  
+
+}
+@keyframes pulse {
+    0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+    70% {
+        transform: translateX(-50%) scale(1.4);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0;
+    }
+}

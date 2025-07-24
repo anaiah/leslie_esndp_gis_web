@@ -1,7 +1,10 @@
     const mainContainer = document.getElementById('main');
     const sidebar = document.getElementById('sidebar');
     
-    let sidebarOpen = false;
+    let sidebarOpen = false; 
+    let map; 
+    const competitorMarkers = []; // Keep track of Markers globally or within scope
+    let markerLayerGroup  // Add to the map initially
 
     const basemap = {
 
@@ -35,14 +38,12 @@
 
                     util.speak(data.voice);
                     basemap.projectModal.hide()
-
-                    
+       
                 }else{
                     util.speak(data.voice)
                     //util.alertMsg(data.message,'warning','equipmentPlaceHolder')
                     return false
                 }//eif
-                
                 
             })
             .catch((error) => {
@@ -71,20 +72,20 @@
         getElevationAsync: (lat, lng)=> {
             const elevator = new google.maps.ElevationService();
             return new Promise((resolve, reject) => {
-            elevator.getElevationForLocations(
-                { locations: [{ lat: lat, lng: lng }] },
-                (results, status) => {
-                if (status === 'OK') {
-                    if (results.length > 0) {
-                    resolve(results[0].elevation);
+                elevator.getElevationForLocations(
+                    { locations: [{ lat: lat, lng: lng }] },
+                    (results, status) => {
+                    if (status === 'OK') {
+                        if (results.length > 0) {
+                        resolve(results[0].elevation);
+                        } else {
+                        reject('No elevation results');
+                        }
                     } else {
-                    reject('No elevation results');
+                        reject('Elevation API error: ' + status);
                     }
-                } else {
-                    reject('Elevation API error: ' + status);
-                }
-                }
-            );
+                    }
+                );
             });
         },
 
@@ -106,14 +107,12 @@
                     { name: "Approved", data: [] },
                     { name: "Opened", data: [] }
                 ];
-
                 
                 results.forEach(item => {
                     series[0].data.push(parseInt(item.approval));
                     series[1].data.push(parseInt(item.approved));
                     series[2].data.push(parseInt(item.opened));
                 });
-
 
                 basemap.chart1.updateSeries(series);
 
@@ -130,7 +129,6 @@
                     xaxis: { categories: xcat }
                 });
 
-
             })	
             .catch((error) => {
                 //util.Toast(`Error:, ${error}`,1000)
@@ -144,10 +142,7 @@
         //load chart
         loadChart: ()=>{
             console.log('loading from  controller  chart.....')
-            // Initialize series
            
-
-
             //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
             let colors = [ '#0277bd','#d84315',  '#2e7d32']
                     
@@ -174,7 +169,6 @@
                     redrawOnWindowResize: false,
                             
                 },
-
                 
                 plotOptions: {
                     bar: {
@@ -255,31 +249,108 @@
             basemap.chart1 = new ApexCharts(document.querySelector("#myChart"), options);
             basemap.chart1.render();
 
+        },//====== end loadChart()
+
+        formatDate: (ts) =>{
+            const date = new Date(ts);
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const day = ("0" + date.getDate()).slice(-2);
+            const year = date.getFullYear();
+            return `${month}-${day}-${year}`;
+        },
+
+        //====== GET PROJECT ======//
+        getProjects: async () => {
+            const response = await fetch(`${myIp}/getallprojects`)
+            const data = await response.json()
+            console.log('projects====',data)
+
+            let statusMap = [
+                 { label: "For Approval", color: "warning" },
+                 { label: "Approved", color: "success" },
+                 { label: "Opened", color: "primary" },
+            ];
+
+            const tbody = document.getElementById('projectTableBody');
+            tbody.innerHTML = ''; // clear existing content
             
-            // Later, update your chart
+            data.forEach(xdata => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td width="200px" >${xdata.name} <br> 
+                    <span class="proj-class">${xdata.project_code}</span><br>
+                    <a href="javascript:basemap.getCompetitors('${xdata.id}','${xdata.latitude}','${xdata.longitude}')" class="show-on-map-link">Show on Map</a></td>
+                <td width="300px">${xdata.address}</td>
+                <td>${xdata.owner}</td>
+                <td>${basemap.formatDate(xdata.created_at)}</td>
+                <td><span class="badge bg-${statusMap[xdata.status-1].color}">${statusMap[xdata.status-1].label}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            basemap.configObj = { keyboard: false, backdrop:'static' }
+            basemap.projectlistModal = new bootstrap.Modal(document.getElementById('projectlistModal'),basemap.configObj);
+
+            // Show modal
+            basemap.projectlistModal.show();
+
+        
+                basemap.hideChart()
             
 
-            
-        },//====== end chart
+        }, //====END GETPROJECTS
 
-        configObj:null,
+        //========GET ALL COMPETITORS
+        getCompetitors: async(projid,lat,lon)=>{
+            const response = await fetch(`${myIp}/getallcompetitors/${projid}/${lat}/${lon}`)
+            const data = await response.json()
+
+            console.log(data)
+
+            const iconSize = Math.max(20, map.getZoom() * 4); // or your preferred size formula
+            
+            //***************** */ Pin competitors first
+            gjson.mygeojson(data,lat,lon)
+            //********************** */
+
+            basemap.projectlistModal.hide()
+            
+        },
+       
+        chartHide:false,
+
+        hideChart:()=>{
+            basemap.chartHide = true
+            basemap.chartCard.classList.add('chart-hide');
+        },
+
+        showChart:()=>{
+            basemap.chartHide = false
+            basemap.chartCard.classList.remove('chart-hide');
+        },
+        configObj : null,
+        projectlistModal : null,
         projectModal:null,
+
+        chartCard : document.querySelector('.chart-card'),
 
         // Example usage after the maps API loads
         // getElevation(14.4594, 121.0431);
         //INIT 
         init : () =>{
 
-
             //get initial performance of Lease people
             basemap.getmtdPerformance()
 
-            // Initialize Leaflet map
-            const map = L.map('map').setView([ 14.4594 , 121.0431 ], 18); //18 zoom in
-             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             // Initialize Leaflet map
+            map = L.map('map').setView([ 14.4594 , 121.0431 ], 18); //18 zoom in
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19
             }).addTo(map);
 
+            markerLayerGroup = L.layerGroup().addTo(map); // Add to the map initially
+
+           
             let db = localStorage
             const owner =  JSON.parse(db.getItem('profile'))
 
@@ -338,7 +409,6 @@
 
                 basemap.getmtdPerformance() //===== get data  again for the Team performance
 
-
             })  
 
             basemap.socket.on('connect', () => {
@@ -350,101 +420,38 @@
             });
            //==============================================END  SOCKET ==========================//
            
-
-            //console.log(owner)
-            
-            // // Log latitude and longitude on map click
-            // map.on('click', async (e) => {
-            //     const lat = e.latlng.lat.toFixed(6);
-            //     const lng = e.latlng.lng.toFixed(6);
-
-            //     try {
-            //         const elev = await basemap.getElevationAsync(e.latlng.lat, e.latlng.lng);
-            //         document.getElementById('elevationField').value = `${elev.toFixed(2)} meters`
-            //     } catch (err) {
-            //         console.error(err);
-            //     }
-            //     // // Reverse geocode with Nominatim
-            //     //fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-            //     fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyD2KmdjMR6loRYvAAxAs84ioWrpYlPgzco`)
-            //         .then(response => response.json())
-            //          .then(data => {
-            //             if (data.status === "OK" && data.results.length > 0) {
-            //             const firstResult = data.results[0];    
-
-            //             // Full address
-            //             const address = firstResult.formatted_address;
-                        
-            //             // Extract specific components like city, country, etc.
-            //             const addressComponents = firstResult.address_components;
-
-            //             let city = '';
-            //             let country = '';
-            //             let state = '';
-
-            //             addressComponents.forEach(component => {
-            //                 if (component.types.includes('locality')) {
-            //                 city = component.long_name;
-            //                 }
-            //                 if (component.types.includes('administrative_area_level_1')) {
-            //                 state = component.long_name;
-            //                 }
-            //                 if (component.types.includes('country')) {
-            //                 country = component.long_name;
-            //                 }
-            //             });
-
-            //             console.log('Address:', address);
-            //             console.log('City:', city);
-            //             console.log('State:', state);
-            //             console.log('Country:', country);
-
-            //             // Example: fill the form fields
-            //             document.getElementById('addressField').value = address; // suppose you have such an input
-            //             document.getElementById('cityField').value = city;
-            //             // similarly for state, country
-            //             } else {
-            //             console.error('No results found or error:', data.status);
-            //             }
-            //         })
-            //         .catch(error => console.error('Error:', error));
-
-            //     //GET CODE
-            //     document.getElementById('projectCode').value = util.Codes()
-
-
-            //     //const coordsDisplay = document.getElementById('coordsDisplay');
-            //     basemap.configObj = { keyboard: false, backdrop:'static' }
-            //     basemap.projectModal = new bootstrap.Modal(document.getElementById('projectModal'),basemap.configObj);
-
-            //     // Show modal
-            //     basemap.projectModal.show();
-
-            //     // Optional: focus on project name input
-            //     document.getElementById('projectName').focus();
-                
-            //     document.getElementById('latField').value = lat 
-            //     document.getElementById('lonField').value = lng 
-            //     document.getElementById('projectOwner').value  = owner[0].full_name 
-                                
-            //     console.log( `Latitude: ${lat}, Longitude: ${lng}`)
-                
-            // // coordsDisplay.textContent = `Latitude: ${lat}, Longitude: ${lng}`;
-            // });
-
             //===load profile pic
             document.getElementById('profile_pic').src = `./assets/images/profile/${owner.pic}`
 
-        }//end init()
+        }//============end init()
 
-        
     }//===end obj
-
     
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=======DOM CONTENT LOADED=====')
     basemap.init()
     basemap.listeners()
+
+    //fire listener
+    const toggleLink = document.getElementById('toggleChartControl');
+    const chartDiv = document.getElementById('chart-card');
+    const iclass = document.getElementById('xclass');
+
+    toggleLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (chartDiv.classList.contains('chart-hide')) {
+            chartDiv.classList.remove('chart-hide');
+            this.textContent = 'Hide Chart';
+            iclass.classList.add('ti-graph-off')
+        } else {
+            chartDiv.classList.add('chart-hide');
+            this.textContent = 'Show Chart';
+            iclass.classList.remove('ti-graph-off')
+            iclass.classList.add('ti-graph')
+        }
+    });
+
+   
 })
    
    
