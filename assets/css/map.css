@@ -175,7 +175,6 @@ color: #0056b3;
 
 .tabler-red{ 
     color:red;
-    font-size: 35px !important;
 }
 .tabler-blood-red{
     color:#8B0000;
@@ -187,16 +186,13 @@ color: #0056b3;
 .tabler-flag-green{
     /* font-size:13px; */
     color:green;
-    font-size: 35px !important;
 }
 .tabler-bluer{
     color:blue;
-    font-size: 40px !important;
 }
 
 .tabler-yellow{
     color:#FFDA00;
-    font-size: 35px !important;
 }
 .tabler-blue{
     color:#225d98;
@@ -239,8 +235,13 @@ color: #0056b3;
 }
 
 .wow-div-icon i {
-    font-size: 30px; /* Adjust icon size */
+    font-size: 15px; /* Set a fixed font size: 15px */
     /*Other styling for the tabler icon*/
+    border: 2px solid black;
+    background-color: rgb(3, 7, 12);
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .wow-div-icon .brand-name {
@@ -259,8 +260,8 @@ color: #0056b3;
 
 /* You might also need to adjust the position of the Tabler Icon a bit lower */
 .wow-div-icon i {
-    top: 20%;           /* Move Tabler Icon lower to allow space*/
-    left: 50%;
+    top: 0%;           /* Move Tabler Icon lower to allow space*/
+    left: 37%; /*50*/
     transform: translate(-50%, 10px); /* Adjust forcentering, also move the Tabler*/
     position:relative;
 }
