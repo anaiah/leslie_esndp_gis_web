@@ -426,7 +426,10 @@
         }//============end init()
 
     }//===end obj
-    
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});    
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=======DOM CONTENT LOADED=====')
     basemap.init()
@@ -450,7 +453,23 @@ document.addEventListener('DOMContentLoaded', function() {
             iclass.classList.add('ti-graph')
         }
     });
+  
 
+    ///disable  rightclck
+    document.onkeydown = function(e) {
+    if(e.keyCode == 123) {  // F12
+        return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 73) {  // Ctrl+Shift+I
+        return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {  // Ctrl+Shift+J
+        return false;
+    }
+    if(e.ctrlKey && e.keyCode == 85) { // Ctrl+U
+        return false;
+    }
+}
    
 })
    
