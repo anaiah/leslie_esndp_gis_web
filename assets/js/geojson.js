@@ -137,6 +137,7 @@ const gjson =  {
 					xicon =  'ti-map-pin-filled'
 				}
 
+				
 			let wowIcon = L.divIcon({
 				className: 'tabler-icon',
 				html: `<i class="ti ${xicon} ${xclass}"></i>`, // Replace with your desired Tabler Icon class
