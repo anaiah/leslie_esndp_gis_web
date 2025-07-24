@@ -66,8 +66,11 @@ const gjson =  {
 		map.setView(latlng,13)
 
 		//===for competitors
-		let arrayBrand = ['7-Eleven','Jollibee','Angels Burger','Minute Burger','Burger Machine','kfc','mcdonald','lawson']
-		let xcolor, xclass
+		let arrayBrand = ['7-Eleven','Jollibee','Angels Burger',
+			'Chowking','Minute Burger','Burger Machine',
+			'kfc','mcdonald','lawson','ministop','uncle john',
+			'7/11','family mart']
+		let xcolor, xclass, xbrand
 
 		//==============ITERATE ARRAY ==============
         adata[0]?.establishments.forEach(est => {
@@ -83,67 +86,136 @@ const gjson =  {
 					return element.toLowerCase().includes(est.name.substring(0,5).toLowerCase());
 				});
 
-
+				
 				if (containsWord) {
-					switch(est.name.substring(0,5).toLowerCase()){
-						case "angel":
+
+					console.log( '*',est.name.substring(0,7).toLowerCase())
+
+					switch(est.name.substring(0,7).toLowerCase()){
+						case "angel's":
 							xcolor='red'
 							xclass='tabler-red'
 							xicon =  'ti-flag-3-filled'
+							xbrand=`ANGEL'S BURGER`
 						break
 
-						case "burge":
+						case "burger ":
 							xcolor='green'
 							xclass='tabler-flag-green'
 							xicon =  'ti-flag-3-filled'
+							xbrand =`BURGER MACHINE`
 						break
 
 						//same market
-						case "minut":
-							xcolor='yellow'
+						case "minute ":
+							xcolor='green'
 							xclass='tabler-bluer'
 							xicon="ti-flag-3-filled"
+							xbrand="MINUTE BURGER"
 							
 						break
 
-						case "jolli":
+						case "7-eleve":
+						case "7/11":
+							xcolor='green'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = '7-ELEVEN'
+						break
+
+						case "lawson":
+							xcolor='#225d98'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'LAWSON'
+						
+						break
+						case "familym":
+							xcolor='#225d98'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'FAMILY MART'
+						
+						break
+						case "uncle j":
+							xcolor='#225d98'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = `UNCLE-JOHN'S`
+						
+						break
+
+						case "ministo":
+							xcolor='#225d98'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'MINI-STOP'
+						
+						break
+
+						case "jollibe":
 							xcolor='red'
 							xclass='tabler-red'
-							xicon='ti-burger'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'JOLLIBEE'
+						break
+
+						case "chowkin":
+							xcolor='red'
+							xclass='tabler-red'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'CHOWKING'
 						break
 
 						case "kfc":
 							xcolor='green'
 							xclass='tabler-blood-red'
-							xicon =  'ti-flag-3-filled'
-						break
-
-						case "mcdon":
-							xcolor='green'
-							xclass='tabler-yellow'
-							xicon =  'ti-brand-mcdonalds'
-						break
-
-						default:
-							xcolor='blue'
-							xclass='tabler-blue'
 							xicon =  'ti-map-pin-filled'
+							xbrand = 'KFC'
 						break
+
+						case "mcdonal":
+							xcolor='yellow'
+							xclass='tabler-yellow'
+							xicon =  'ti-map-pin-filled'
+							xbrand = 'MCDO'
+						break
+
+						// default:
+						// 	xcolor='blue'
+						// 	xclass='tabler-blue'
+						// 	xicon =  'ti-map-pin-filled'
+						// 	xbrand = est.name.substring(0,6).toUpperCase()
+						// break
 
 					}
 				} else {
-					xcolor='blue'
+
+					console.log( est.name.substring(0,7).toLowerCase())
+
+					xcolor=''
 					xclass='null'
 					xicon =  'ti-map-pin-filled'
+					xbrand = est.name.substring(0,6).toUpperCase()
 				}
 
-				
+
+			// let wowIcon = L.divIcon({
+			// 	className: 'tabler-icon',
+			// 	html: `<i class="ti ${xicon} ${xclass}"></i>`, // Replace with your desired Tabler Icon class
+        	// 	iconSize: [42, 42],
+			// 	iconAnchor: [15, 42],
+			// 	popupAnchor:[0,-42]
+			// });
+
 			let wowIcon = L.divIcon({
-				className: 'tabler-icon',
-				html: `<i class="ti ${xicon} ${xclass}"></i>`, // Replace with your desired Tabler Icon class
-        		iconSize: [42, 42],
+				className: 'wow-div-icon',
+				html: `<div class="icon-container">
+               <div class="brand-name">${xbrand}</div>
+               <i class="ti ${xicon}" style="color:${xcolor}"></i>`,
+				iconSize: [42, 42],
 				iconAnchor: [15, 42],
-				popupAnchor:[0,-42]
+				popupAnchor: [0, -42]
 			});
 
 			let xlatlng = L.latLng( parseFloat(est.lat), parseFloat(est.lon) ) 

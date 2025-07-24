@@ -199,7 +199,7 @@ color: #0056b3;
     font-size: 35px !important;
 }
 .tabler-blue{
-    color:rgb(34, 93, 152);
+    color:#225d98;
 }
 .fa-div-icon {
     position: relative;
@@ -227,4 +227,40 @@ color: #0056b3;
         transform: translateX(-50%) scale(1);
         opacity: 0;
     }
+}
+.wow-div-icon .icon-container {
+    position: relative;        /* Crucial: Stacking context */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   /* Stack brand, icon vertically */
+    align-items: center;      /* Center horizontally */
+    justify-content: center;  /* Center Vertically */
+}
+
+.wow-div-icon i {
+    font-size: 30px; /* Adjust icon size */
+    /*Other styling for the tabler icon*/
+}
+
+.wow-div-icon .brand-name {
+    position: absolute;
+    top: 0; /* Position at top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    font-size: 0.7em;   /* Adjust text size */
+    color: #f9e2e2;       /* Set text color */
+    background-color: rgba(10, 2, 2, 0.7); /* Optional background */
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 2;           /* Ensure on top */
+    white-space: nowrap;  /* Prevent text wrapping */
+}
+
+/* You might also need to adjust the position of the Tabler Icon a bit lower */
+.wow-div-icon i {
+    top: 20%;           /* Move Tabler Icon lower to allow space*/
+    left: 50%;
+    transform: translate(-50%, 10px); /* Adjust forcentering, also move the Tabler*/
+    position:relative;
 }
