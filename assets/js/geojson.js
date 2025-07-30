@@ -9,28 +9,42 @@ const gjson =  {
 
 		
 		//pin first the  projject
-		let pic = `https://asianowapp.com//html/rcpt/${adata[0].project_code}.jpg`
+		let pic = `https://asianowapp.com/esndp/${adata[0].project_code}.jpg`
 
 		//console.log(lat,lon)
 		let latlng = L.latLng( lat, lon) 
-		
+	
+		// ORIG  ICON  CODE
+		// let mainIcon = L.divIcon({
+		// 		className: 'fa-div-icon',
+		// 		html:`<span class="fa-stack fa-2x">
+		// 		<i class="fa-solid fa-circle fa-stack-2x"></i>
+		// 		<i class="fa-solid fa-street-view fa-stack-1x fa-inverse"></i>
+		// 		</span>`,
+		// 		iconSize: [30, 42],
+		// 		iconAnchor: [15, 42],
+		// 		popupAnchor:[0,-42]
+		// 	});
+			
 		let mainIcon = L.divIcon({
-				className: 'fa-div-icon',
-				html:`<span class="fa-stack fa-2x">
-				<i class="fa-solid fa-circle fa-stack-2x"></i>
-				<i class="fa-solid fa-street-view fa-stack-1x fa-inverse"></i>
-				</span>`,
+			className: 'custom-marker', // Changed class name
+			html: `
+			<div class="marker-glow"></div>  <!-- Glowing circle -->
+			<span class="fa-stack fa-2x"> <!-- Font Awesome icons -->
+			<i class="fa-solid fa-circle fa-stack-2x"></i>
+			<i class="fa-solid fa-street-view fa-stack-1x fa-inverse"></i>
+			</span>`,
 				iconSize: [30, 42],
 				iconAnchor: [15, 42],
 				popupAnchor:[0,-42]
-			});
+		});
+	
 			
-		
 		let zmarker =L.marker(latlng, {icon:mainIcon}).addTo(map)
 
 		let acquisitionLatLon = zmarker.getLatLng()
 
-		console.log('***MAIN MARKER LETLNG()****',zmarker.getLatLng())
+		console.log('***MAIN MARKER LaTLNG()****',zmarker.getLatLng())
 
 		let markerElement = zmarker._icon;
 
@@ -71,7 +85,7 @@ const gjson =  {
 			'Chowking','Minute Burger','Burger Machine',
 			'kfc','mcdonald','lawson','ministop','uncle john',
 			'7/11','family mart']
-		let xcolor, xclass, xbrand
+		let xcolor, xicon, xbrand
 
 		//==============ITERATE ARRAY ==============
         adata[0]?.establishments.forEach(est => {
@@ -90,7 +104,7 @@ const gjson =  {
 				
 				if (containsWord) {
 
-					////console.log( '*',est.name.substring(0,7).toLowerCase())
+				console.log( '*',est.name.substring(0,7).toLowerCase())
 
 					switch(est.name.substring(0,7).toLowerCase()){
 						case "angel's":
@@ -144,6 +158,7 @@ const gjson =  {
 						
 						break
 						case "familym":
+						case "family ":
 							xcolor='#225d98'
 							xclass='tabler-red'
 							xicon =  'ti-map-pin-filled'

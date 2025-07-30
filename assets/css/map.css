@@ -265,3 +265,49 @@ color: #0056b3;
     transform: translate(-50%, 10px); /* Adjust forcentering, also move the Tabler*/
     position:relative;
 }
+
+.custom-marker {
+  position: relative; /* Needed for absolute positioning of the glow */
+  width: 30px; /* Match iconSize width */
+  height: 42px; /* Match iconSize height */
+  display: flex;          /* Use flexbox to center the stack */
+  flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color:blue; 
+    font-size:8px;  
+}
+
+.custom-marker .marker-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the circle */
+  width: 80px; /* Adjust glow size */
+  height: 80px; /* Adjust glow size */
+  background-color: rgba(0, 123, 255, 0.5); /* Glow color and transparency */
+  border-radius: 50%; /* Make it a circle */
+  z-index: -1; /* Place it behind the icon */
+  animation: glow 2s infinite; /* Add animation */
+}
+
+.custom-marker .fa-stack {
+  position: relative; /* Needed to keep the fa-stack centered */
+}
+
+@keyframes glow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+}
+
