@@ -1,2 +1,2 @@
-//const myIp = "http://10.202.213.221:10000"
-const myIp  = "https://esndp-gis-jku4q.ondigitalocean.app"
+//const myIp = "http://10.45.34.180:10000"
+const myIp  = "https://leslie-gis.onrender.com"

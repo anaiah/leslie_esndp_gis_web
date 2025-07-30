@@ -128,6 +128,7 @@ const gjson =  {
 						break
 
 						case "7-eleve":
+						case "7 eleve":
 						case "7/11":
 							xcolor='green'
 							xclass='tabler-red'
