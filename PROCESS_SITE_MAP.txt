@@ -1,0 +1,11 @@
+SDO 
+LOGIN
+MAP.html
+onclick->getlocationdata()->route/geocode/lat/lon 
+newsitepost() -> route/newsitepost -> route/getallestablishments (competitor) -> getPlacesforKeyword(())
+
+MGRS
+getallprojects()-> route/getallprojects()
+getallcompetitors() -> route/getallcompetitors()
+
+get

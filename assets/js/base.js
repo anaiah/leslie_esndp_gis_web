@@ -103,15 +103,17 @@
                 basemap.loadChart( results )//load dta results to map
 
                 const series = [
-                    { name: "For Approval", data: [] },
-                    { name: "Approved", data: [] },
+                    { name: "Sourced", data: [] },
+                    { name: "Nego", data: [] },
+                    { name: "Secured", data: [] },
                     { name: "Opened", data: [] }
                 ];
                 
                 results.forEach(item => {
-                    series[0].data.push(parseInt(item.approval));
-                    series[1].data.push(parseInt(item.approved));
-                    series[2].data.push(parseInt(item.opened));
+                    series[0].data.push(parseInt(item.sourced));
+                    series[1].data.push(parseInt(item.nego));
+                    series[2].data.push(parseInt(item.secured));
+                    series[3].data.push(parseInt(item.opened));
                 });
 
                 basemap.chart1.updateSeries(series);
@@ -144,7 +146,7 @@
             console.log('loading from  controller  chart.....')
            
             //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
-            let colors = [ '#0277bd','#d84315',  '#2e7d32']
+            let colors = [ '#0277bd','#d84315',  '#2e7d32','#ff8f00']
                     
             // Fisher-Yates shuffle
             // for (let i = colors.length - 1; i > 0; i--) {
@@ -266,9 +268,10 @@
             console.log('projects====',data)
 
             let statusMap = [
-                 { label: "For Approval", color: "warning" },
-                 { label: "Approved", color: "success" },
-                 { label: "Opened", color: "primary" },
+            { label: "Site Sourcing", color: "warning" },
+            { label: "Site Negotiation", color: "success", },
+            { label: "Site Secured", color: "success" },
+            { label: "Opened", color: "primary" },
             ];
 
             const tbody = document.getElementById('projectTableBody');
@@ -294,9 +297,7 @@
             // Show modal
             basemap.projectlistModal.show();
 
-        
-                basemap.hideChart()
-            
+            basemap.hideChart()
 
         }, //====END GETPROJECTS
 
@@ -429,7 +430,8 @@
 
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-});    
+});
+ 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=======DOM CONTENT LOADED=====')
     basemap.init()
@@ -454,7 +456,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
   
-
     ///disable  rightclck
     document.onkeydown = function(e) {
         if(e.keyCode == 123) {  // F12

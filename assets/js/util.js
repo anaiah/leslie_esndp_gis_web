@@ -1039,6 +1039,8 @@ const util = {
 			}
 		})///=====end loop form to get elements	
 	},
+    newMapData:[],
+
     //==========WHEN SUBMIT BUTTON CLICKED ==================
     validateMe: async (frmModal, frm, classX)=>{
         console.log('validateMe()===', frmModal, frm)
@@ -1101,9 +1103,28 @@ const util = {
                     btn.innerHTML = 'Saving... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
                     btn.disabled = true;
   
-                   xmap.newsitePost(frm,frmModal,`${myIp}/newsitepost`,formdata )
+                    util.newMapData.forEach((competitor, index) => {
+                    formdata.append(`competitors[${index}][name]`, competitor.name);
+                    formdata.append(`competitors[${index}][lat]`, competitor.lat);
+                    formdata.append(`competitors[${index}][lon]`, competitor.lon);
+                    formdata.append(`competitors[${index}][vicinity]`, competitor.vicinity);
+                    formdata.append(`competitors[${index}][distanceKm]`, competitor.distanceKm);
                     
-                   console.log('==posting newSiteModal data ==', formdata);
+                    // ... append other competitor properties as needed
+                    });
+                   
+                    //POST NNOW 
+                    xmap.newsitePost(frm,frmModal,`${myIp}/newsitepost`,formdata )
+                   
+                   
+                    // Iterate through the FormData and log each key-value pair
+                   console.log('**POSTING FORM COMPETITOR VALUE***' ,util.newMapData ) 
+                   
+                   for (const pair of formdata.entries()) {
+                        console.log('for posting',pair[0] + ': ' + pair[1]);
+                    }
+                   
+                   //console.log('==posting newSiteModal data ==', formdata);
 				break;
 
                 case "#commentsForm":

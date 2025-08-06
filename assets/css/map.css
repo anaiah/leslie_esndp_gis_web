@@ -284,12 +284,12 @@ color: #0056b3;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* Center the circle */
-  width: 80px; /* Adjust glow size */
-  height: 80px; /* Adjust glow size */
-  background-color: rgba(0, 123, 255, 0.5); /* Glow color and transparency */
+  width: 70px; /* Adjust glow size */
+  height: 70px; /* Adjust glow size */
+  background-color: rgba(0, 123, 255, 0.7); /* Glow color and transparency */
   border-radius: 50%; /* Make it a circle */
   z-index: -1; /* Place it behind the icon */
-  animation: glow 2s infinite; /* Add animation */
+  animation: glow 3s infinite; /* Add animation */
 }
 
 .custom-marker .fa-stack {
@@ -310,4 +310,21 @@ color: #0056b3;
     opacity: 0.5;
   }
 }
+
+.waiting-indicator {
+  position: fixed; /* Stay in the same place on the screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the indicator */
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 5px;
+  z-index: 1000; /* Ensure it's on top of the map */
+  display: none; /* Initially hide the indicator */
+}
+
+.waiting-indicator i {
+  margin-right: 10px;
+}
+
 
