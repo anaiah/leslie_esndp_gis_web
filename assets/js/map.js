@@ -72,6 +72,16 @@
             })
         
         },
+
+        clearMap:()=>{
+             map.eachLayer(function (layer) {
+                if (layer instanceof L.TileLayer) {
+                    // Do nothing - Tile layer needs to stay
+                }else{
+                map.removeLayer(layer);
+                }
+            });
+        },
         
         //INCLUDE LISTENER
         listeners:()=>{
@@ -86,6 +96,42 @@
                 // Optionally, you can add actions for navigation here
                 };
             });
+
+            //========for searchbox  google api places=========//
+            const searchBox = document.getElementById('searchBox');
+
+            searchBox.addEventListener('keypress', async (event) => {
+                if (event.key === 'Enter') {
+                    
+                    xmap.waitingIndicator.style.display = 'block';
+                    xmap.clearMap() // RESET  MAP
+
+                    const address = searchBox.value;
+                    // ... rest of your geocoding code
+                    // Send a request to your *own* server
+                    const response = await fetch(`${myIp}/getaddress/${encodeURIComponent(address)}`);
+                    const data = await response.json();
+
+                    if (data.status === 'OK') {
+                        console.log('uyyyy')
+                        const latitude = data.results[0].geometry.location.lat;
+                        const longitude = data.results[0].geometry.location.lng;
+
+                        // Update the map (center and add a marker)
+                        // map.setView([latitude, longitude], 17);
+                        // L.marker([latitude, longitude]).addTo(map);
+                        xmap.getLocationData( latitude, longitude)
+
+
+                    } else {
+                        alert(`Geocoding failed:, ${data.status}`)
+                        console.error('Geocoding failed:', data.status);
+                        // Handle the error
+                    }
+                
+                }
+            });
+
         },
 
         formatDate: (ts) =>{
@@ -244,10 +290,32 @@
         
         },
 
-        saveData: async()=>{
-            //=========TAKE OUT MUN CARLO PERO IBALIK MO  ITO FOR PROJECT MODAL
+        ///show postiion of rider
+      showPosition: (position) => { 
+        
+        console.log('GETTING POSITION ',position.coords.latitude, position.coords.longitude )
+        
+        let obj={}
+          obj.lat = position.coords.latitude
+          obj.lon = position.coords.longitude
 
-        },
+          //===================================
+            xmap.waitingIndicator.style.display = 'block'
+            xmap.getLocationData( obj.lat, obj.lon)
+          //===================================
+
+      },
+
+      getHubLocation:()=>{
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition( xmap.showPosition );
+        }else{
+          alert('PLEASE TURN-ON YOUR PHONE LOCATION OR GPS')
+          return false
+        }
+      },
+
 
         //INIT 
         init : () =>{
@@ -258,6 +326,9 @@
             }).addTo(map);
 
             markerLayerGroup = L.layerGroup().addTo(map); // Add to the map initially
+
+            console.log("1. Immediately after creation: typeof markerLayerGroup =", typeof markerLayerGroup, ", markerLayerGroup =", markerLayerGroup);
+
 
             let db = localStorage  //get localstoreage
 

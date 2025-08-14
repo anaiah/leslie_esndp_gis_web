@@ -64,7 +64,7 @@
 
             <li class="sidebar-item">
                 <!-- <a class="sidebar-link" href="#" data-bs-toggle="modal" data-bs-target="#projectModal" aria-expanded="false"> -->
-                <a class="sidebar-link" href="javascript:markerLayerGroup.clearLayers();" aria-expanded="false">
+                <a class="sidebar-link" href="javascript:xmap.clearMap();" aria-expanded="false">
                 <i class="ti ti-restore"></i>
                 <span class="menu-text">Reset</span>
                 </a>
@@ -87,19 +87,33 @@
     <!-- Main content container, fills entire page -->
     <div id="main" class="mt-56">
         <div class="full-page p-0 m-0">
-        <div class="card h-100 p-3 bg-light">
-            <div id="map"></div>
+            <div class="card h-100 p-3 bg-light">
 
-            <!-- Waiting Indicator (Insert here, INSIDE card) -->
-            <div id="waiting-indicator" class="waiting-indicator">
-                <i class="fas fa-spinner fa-spin"></i> Please Wait...
+                <!-- Search Box Container (Above the Map) -->
+                <div class="search-container mt-2 mb-2">
+                    <div class="row g-2 align-items-center">  <!-- Added align-items-center -->
+                        <div class="col-md-5">  <!-- Reduced the width of the input column -->
+                            <input type="text" id="searchBox" class="form-control" placeholder="Enter address or location">
+                        </div>
+                        <div class="col-md-auto">
+                            <button class="btn btn-primary" onclick="javascript:xmap.getHubLocation()"><i class="'ti ti-map-pin"></i> Get Current Location</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="map"></div>
+
+                <!-- Waiting Indicator (Insert here, INSIDE card) -->
+                <div id="waiting-indicator" class="waiting-indicator">
+                    <i class="fas fa-spinner fa-spin"></i> Please Wait...
+                </div>
+
+                <!-- End Waiting Indicator -->
+                <!-- <div class="mt-2" id="coordsDisplay">Click on the map to see coordinates</div> -->
             </div>
-            
-            <!-- End Waiting Indicator -->
-            <!-- <div class="mt-2" id="coordsDisplay">Click on the map to see coordinates</div> -->
-        </div>
         </div>
     </div>
+
 
     <!-- =================================MODALS=================================== -->
 

@@ -35,69 +35,68 @@ const gjson =  {
         setTimeout(function() {
             // Hide the waiting indicator after the operation is complete
             xmap.waitingIndicator.style.display = 'none';
-                mainIcon = L.divIcon({
-                    className: 'custom-marker', // Changed class name
-                    html: `
-                    <div class="marker-glow"></div>  <!-- Glowing circle -->
-                    <span class="fa-stack fa-2x"> <!-- Font Awesome icons -->
-                    <i class="fa-solid fa-circle fa-stack-2x"></i>
-                    <i class="fa-solid fa-street-view fa-stack-1x fa-inverse"></i>
-                    </span>`,
-                        iconSize: [30, 42],
-                        iconAnchor: [15, 42],
-                        popupAnchor:[0,-42]
-                });
+            
+			mainIcon = L.divIcon({
+				className: 'custom-marker', // Changed class name
+				html: `
+				<div class="marker-glow"></div>  <!-- Glowing circle -->
+				<span class="fa-stack fa-2x"> <!-- Font Awesome icons -->
+				<i class="fa-solid fa-circle fa-stack-2x"></i>
+				<i class="fa-solid fa-street-view fa-stack-1x fa-inverse"></i>
+				</span>`,
+					iconSize: [30, 42],
+					iconAnchor: [15, 42],
+					popupAnchor:[0,-42]
+			});
 
-                zmarker =L.marker(latlng, {icon:mainIcon}).addTo(map)
+			zmarker =L.marker(latlng, {icon:mainIcon}).addTo(map)
 
-                acquisitionLatLon = zmarker.getLatLng()
+			acquisitionLatLon = zmarker.getLatLng()
 
-                console.log('***MAIN MARKER LaTLNG()****',zmarker.getLatLng())
+			console.log('***MAIN MARKER LaTLNG()****',zmarker.getLatLng())
 
-                markerElement = zmarker._icon;
+			markerElement = zmarker._icon;
 
-                setTimeout(()=>{
-                    markerElement.classList.add('fade-in')
-                })
+			setTimeout(()=>{
+				markerElement.classList.add('fade-in')
+			})
 
-                zmarker.bindPopup(`<b>Site Address : ${adata.address}<br>
-                                    <button onclick="javascript:gjson.saveData(${lat}, ${lon});" class='btn btn-primary btn-sm'>Save</button>`)
+			zmarker.bindPopup(`<b>Site Address : ${adata.address}<br>
+								<button onclick="javascript:gjson.saveData(${lat}, ${lon});" class='btn btn-primary btn-sm'>Save</button>`)
 
-                zmarker.openPopup()
-                markerLayerGroup.addLayer(zmarker); // Add it to the Layer Group so we can clear altogether
+			zmarker.openPopup()
+			markerLayerGroup.addLayer(zmarker); // Add it to the Layer Group so we can clear altogether
 
 
-                // 3. Define the circle options (style)
-                var circleOptions = {
-                    color: 'red',         // Border color
-                    fillColor: 'FFA07A',     // Fill color
-                    fillOpacity: 0.07,       // Fill opacity (0 to 1)
-                    weight: 1 // in 1 pixel
-                };
+			// 3. Define the circle options (style)
+			var circleOptions = {
+				color: 'red',         // Border color
+				fillColor: 'FFA07A',     // Fill color
+				fillOpacity: 0.07,       // Fill opacity (0 to 1)
+				weight: 1 // in 1 pixel
+			};
 
-                const radius=1000
+			const radius=1000
 
-                // 4. Create the circle object
-                var circle = L.circle( latlng , radius, circleOptions);
+			// 4. Create the circle object
+			var circle = L.circle( latlng , radius, circleOptions);
 
-                // 5. Add the circle to the map
-                circle.addTo(map);
+			// 5. Add the circle to the map
+			circle.addTo(map);
 
-                markerLayerGroup.addLayer(circle); // Add it to the Layer Group so we can clear altogether
+			markerLayerGroup.addLayer(circle); // Add it to the Layer Group so we can clear altogether
 
-                map.setView(latlng,13)
+			map.setView(latlng,15)
 
          
         }, 1200)
-
-		
-		
 		
 		//===for competitors
 		let arrayBrand = ['7-Eleven','Jollibee','Angels Burger',
 			'Chowking','Minute Burger','Burger Machine',
 			'kfc','mcdonald','lawson','ministop','uncle john',
 			'7/11','family mart']
+
 		let xcolor, xicon, xbrand
 
 		//==============ITERATE ARRAY ==============
@@ -262,21 +261,7 @@ const gjson =  {
 			        
         })//===============end array iterate=====
 
-		
-    // var initialZoom = map.getZoom()
-    // map.on('zoomend', function() {
-    // var currentZoom = map.getZoom();
-    // var scaleFactor = 1 + (currentZoom - initialZoom) * 0.2; // Adjust 0.2 for scale sensitivity
-
-    // // Select all the marker icons and apply the transform
-    // var markerz = document.querySelectorAll('.leaflet-marker-icon'); // Adjust selector if needed
-    // markerz.forEach(function(markerzz) {
-    //     markerzz.style.transform = 'scale(' + scaleFactor + ')';
-    //     // Also adjust margin to keep icon centered, as needed
-    //     markerzz.style.marginLeft = -markerzz.offsetWidth / 2 * scaleFactor + 'px';
-    //     markerzz.style.marginTop = -markerzz.offsetHeight / 2 * scaleFactor + 'px';
-    // });
-    // });
+		//===========getbounds
 
 	},
 
