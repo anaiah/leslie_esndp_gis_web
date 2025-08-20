@@ -157,6 +157,8 @@
 
             Chart.register(ChartDataLabels);
             
+            let delayed
+
             const myChart = new Chart(ctx, {
                 type: 'bar',
                 height:300,
@@ -167,21 +169,44 @@
                         label: 'Sourced',
                         data: sourcedData,
                         backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
+                        borderColor: 'rgba(26, 86, 127, 0.8)', // Blue
+                        borderWidth: 1
                     }, {
                         label: 'Nego',
                         data: negoData,
                         backgroundColor: 'rgba(255, 99, 132, 0.8)',   // Red
+                        borderColor : 'rgba(238, 18, 65, 0.8)',   // Red
+                        borderWidth: 1
                     }, {
                         label: 'Secured',
                         data: securedData,
                         backgroundColor: 'rgba(8, 244, 24, 0.82)',  // Green
+                        borderColor: 'rgba(4, 137, 13, 0.82)',   // Red
+                        borderWidth: 1
                     }, {
                         label: 'Opened',
                         data: openedData,
-                        backgroundColor: 'rgba(255, 159, 64, 0.8)'    // Orange
+                        backgroundColor: 'rgba(255, 159, 64, 0.8)',    // Orange
+                        borderColor: 'rgba(208, 111, 15, 0.8)',    // Orange
+                        borderWidth: 1
+                        
                     }]
                 },
                 options: {
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            }
+                        
+                            return delay;
+                        },
+                    },
+
                     scales: {
                         y: {
                             beginAtZero: true,
