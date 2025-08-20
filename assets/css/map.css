@@ -96,6 +96,19 @@ margin: 0;
     z-index: 1000;
     transition: transform 0.5s ease-in-out;
 }
+.chart-card2 {
+    position: absolute; /* Absolute positioning to overlay the map */
+    top: 10%; /* Adjust as needed */
+    right: 30px; /* Aligns card to the right */
+    width: auto; /* 20% of the width */
+    background-color: rgba(255, 255, 255, 0.6); /* Transparent white background */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensures content doesn't spill out */
+    z-index: 1000;
+    transition: transform 0.5s ease-in-out;
+}
 
 .chart-hide {
     transform: translateX(100%);

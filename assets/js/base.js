@@ -67,6 +67,134 @@
                 };
             });
 
+            const myModal = document.getElementById('performanceModal')
+
+            myModal.addEventListener('shown.bs.modal', () => {
+               
+                basemap.loadPerformanceChart('chartNz')
+
+                 setTimeout(function() {
+                    basemap.loadPerformanceChart('chartMUP')
+                }, 500); //
+            }) //end modal listener
+        },
+
+        loadPerformanceChart: (divid )=>{
+                const data = basemap.performance_data
+
+                // Extract categories (owner names)
+                const labels = data.map(item => item.owner_name);
+                let ctx, sourcedData, negoData, securedData, openedData, chartId
+
+                // Extract data for each status
+                if(divid=='chartNz'){
+                    sourcedData = data.map(item => parseInt(item["nz sourced"]));
+                    negoData = data.map(item => parseInt(item["nz nego"]));
+                    securedData = data.map(item => parseInt(item["nz secured"]));
+                    openedData = data.map(item => parseInt(item["nz opened"]));
+    
+                    ctx = document.getElementById('chartNZ').getContext('2d');
+                    chartId = 'myNz'
+                }else{
+                    sourcedData = data.map(item => parseInt(item["mup sourced"]));
+                    negoData = data.map(item => parseInt(item["mup nego"]));
+                    securedData = data.map(item => parseInt(item["mup secured"]));
+                    openedData = data.map(item => parseInt(item["mup opened"]));
+    
+                    ctx = document.getElementById('chartMUP').getContext('2d');
+                    chartId = 'myMup'
+                }//eif
+
+                // Check if a chart instance exists and destroy it
+                const existingChart = Chart.getChart(divid);
+                if (existingChart) {
+                  existingChart.destroy();
+                }
+                
+
+                Chart.register(ChartDataLabels);
+                
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    height:300,
+                    width:350,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Sourced',
+                            data: sourcedData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
+                        }, {
+                            label: 'Nego',
+                            data: negoData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.8)',   // Red
+                        }, {
+                            label: 'Secured',
+                            data: securedData,
+                            backgroundColor: 'rgba(8, 244, 24, 0.82)',  // Green
+                        }, {
+                            label: 'Opened',
+                            data: openedData,
+                            backgroundColor: 'rgba(255, 159, 64, 0.8)'    // Orange
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Count'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Owner'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                //text: 'NZ Performance Data',
+                                padding: 10,
+                                font: {
+                                    size: 18
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('en-US', { style: 'decimal' }).format(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                            datalabels: {   // Add datalabels plugin options here
+                                anchor: 'end',
+                                align: 'top',
+                                formatter: Math.round,
+                                font: {
+                                    weight: 'bold',
+                                    size: 12
+                                }
+                            }
+                        }, //====end plugin
+                        responsive: false,
+                        maintainAspectRatio: false
+                    }
+                });
         },
 
         getElevationAsync: (lat, lng)=> {
@@ -89,6 +217,41 @@
             });
         },
 
+        //=== for main performance dashboard
+        sdo_chart1: null,
+        sdo_chart2: null,
+
+        region_chart: null,
+        performance_data:null,
+
+        getMainPerformance: async() =>{
+            await fetch(`${myIp}/sdoperformance`,{
+                cache:'reload'
+            })
+            .then( (res) => res.json() )
+
+            .then( (results)  => {
+
+                basemap.performance_data = results
+                console.log('PERFORMANCE  DATA-->', basemap.performance_data )
+            })	
+            .catch((error) => {
+                //util.Toast(`Error:, ${error}`,1000)
+                console.error('Error:', error)
+            })    
+                        
+            basemap.configObj = { keyboard: false, backdrop:'static' }
+            basemap.performanceModal = new bootstrap.Modal(document.getElementById('performanceModal'),basemap.configObj);
+
+            // Show modal
+            basemap.performanceModal.show();
+
+            
+        },
+
+        
+        
+        //===for monthly chart
         getmtdPerformance: async()=>{
             util.speak('Loading chart...!')
             await fetch(`${myIp}/mtdperformance`,{
@@ -120,6 +283,7 @@
 
                 let xcat = []
             
+                //PUSH THE SDO'S NAME JOM,SHE,LOUIE
                 results.forEach(item => {
                     if (!xcat.includes(item.owner_name.trim())) {
                         xcat.push(item.owner_name.trim());
@@ -332,6 +496,7 @@
         configObj : null,
         projectlistModal : null,
         projectModal:null,
+        performanceModal: null,
 
         chartCard : document.querySelector('.chart-card'),
 

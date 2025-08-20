@@ -27,8 +27,7 @@
         //===new project posting
         //new site posting 
         newsitePost:async function(frm,modal,url="",xdata={}){
-           
-            
+                      
             await fetch(url,{
                 method:'POST',
                 body: xdata
@@ -327,7 +326,7 @@
 
             markerLayerGroup = L.layerGroup().addTo(map); // Add to the map initially
 
-            console.log("1. Immediately after creation: typeof markerLayerGroup =", typeof markerLayerGroup, ", markerLayerGroup =", markerLayerGroup);
+            //console.log("1. Immediately after creation: typeof markerLayerGroup =", typeof markerLayerGroup, ", markerLayerGroup =", markerLayerGroup);
 
 
             let db = localStorage  //get localstoreage

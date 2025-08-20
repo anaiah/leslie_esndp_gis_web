@@ -32,7 +32,6 @@ let xloginmodal,
 let voices = []
 
 //first init delete all localstorage
-db	
 const util = {
 	
 	scrollsTo:(cTarget)=>{
@@ -1114,7 +1113,9 @@ const util = {
                     });
                    
                     //POST NNOW 
-                    xmap.newsitePost(frm,frmModal,`${myIp}/newsitepost`,formdata )
+                    const owner =  JSON.parse( db.getItem('profile'))
+                    console.log( 'MY REGION', owner.region)
+                    xmap.newsitePost(frm,frmModal,`${myIp}/newsitepost/${owner.region}`,formdata )
                    
                    
                     // Iterate through the FormData and log each key-value pair

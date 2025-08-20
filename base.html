@@ -12,6 +12,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
     <script src="https://kit.fontawesome.com/c8bdb13a5c.js" crossorigin="anonymous"></script>
@@ -45,6 +48,16 @@
         <ul id="sidebarnav" class="sidebar-menu">
             <li class="nav-small-cap">
                 <i class="nav-small-cap-icon"></i>
+                <span class="menu-section-label">PERFORMANCE DASHBOARD</span>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="javascript:basemap.getMainPerformance()" aria-expanded="false">
+                <i class="ti ti-chart-bar"></i>
+                <span class="menu-text">Load</span>
+                </a>
+            </li>
+            <li class="nav-small-cap">
+                <i class="nav-small-cap-icon"></i>
                 <span class="menu-section-label">CHART</span>
             </li>
             <li class="sidebar-item">
@@ -62,7 +75,7 @@
 
             <li class="nav-small-cap">
                 <i class="nav-small-cap-icon"></i>
-                <span class="menu-section-label">STORE PROJECTS</span>
+                <span class="menu-section-label">SITE PROJECTS</span>
             </li>
 
             <li class="sidebar-item">
@@ -204,8 +217,56 @@
     </div>
     </div>
 
-    
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js?ver=12"></script>
+    <!-- this is modal for performance -->
+    <!-- Fullscreen, Scrollable Modal with 2-column grid -->
+  <!-- Bootstrap Modal -->
+<div class="modal fade" id="performanceModal" tabindex="-1" aria-labelledby="performanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="performanceModalLabel">Performance Data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- First Column -->
+            <div class="col-md-6">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h5 class="card-title">NZ</h5>
+                  <div class="table-responsive">
+                    <canvas id="chartNZ" style="height: 300px; width:400px;"></canvas>
+                    </canvas> <!-- Chart MUP will be rendered here -->
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
+            <!-- Second Column -->
+            <div class="col-md-6">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h5 class="card-title">MUP</h5>
+                 <div class="table-responsive">
+                    <canvas id="chartMUP" style="height: 300px; width:400px;"></canvas>
+                    </canvas> <!-- Chart MUP will be rendered here -->
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js?ver=12"></script>
 
       <!-- toastify -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
