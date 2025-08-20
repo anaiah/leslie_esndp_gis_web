@@ -67,134 +67,177 @@
                 };
             });
 
+            //====== if PERFORMANCE MODAL IS LOADED==========//
             const myModal = document.getElementById('performanceModal')
-
             myModal.addEventListener('shown.bs.modal', () => {
                
-                basemap.loadPerformanceChart('chartNz')
+                basemap.loadPerformanceChart('chartnz')
 
-                 setTimeout(function() {
-                    basemap.loadPerformanceChart('chartMUP')
+                setTimeout(function() {
+                    basemap.loadPerformanceChart('chartmup')
                 }, 500); //
+
+                setTimeout(function() {
+                    basemap.loadPerformanceChart('regionnz')
+                }, 500); //
+
+                setTimeout(function() {
+                    basemap.loadPerformanceChart('regionmup')
+                }, 500); //
+
             }) //end modal listener
         },
 
         loadPerformanceChart: (divid )=>{
-                const data = basemap.performance_data
+    
+            // Extract categories (owner names)
+            let data, labels, ctx, sourcedData, negoData, securedData, openedData
 
-                // Extract categories (owner names)
-                const labels = data.map(item => item.owner_name);
-                let ctx, sourcedData, negoData, securedData, openedData, chartId
-
-                // Extract data for each status
-                if(divid=='chartNz'){
+            switch(divid){
+                case "chartnz":
+                    data = basemap.sdo_data
+                    labels = data.map(item => item.owner_name);
+                
                     sourcedData = data.map(item => parseInt(item["nz sourced"]));
                     negoData = data.map(item => parseInt(item["nz nego"]));
                     securedData = data.map(item => parseInt(item["nz secured"]));
                     openedData = data.map(item => parseInt(item["nz opened"]));
     
                     ctx = document.getElementById('chartNZ').getContext('2d');
-                    chartId = 'myNz'
-                }else{
+                break
+                
+                case "chartmup":
+                    data = basemap.sdo_data
+                    labels = data.map(item => item.owner_name);
+                
                     sourcedData = data.map(item => parseInt(item["mup sourced"]));
                     negoData = data.map(item => parseInt(item["mup nego"]));
                     securedData = data.map(item => parseInt(item["mup secured"]));
                     openedData = data.map(item => parseInt(item["mup opened"]));
     
                     ctx = document.getElementById('chartMUP').getContext('2d');
-                    chartId = 'myMup'
-                }//eif
-
-                // Check if a chart instance exists and destroy it
-                const existingChart = Chart.getChart(divid);
-                if (existingChart) {
-                  existingChart.destroy();
-                }
                 
+                break
 
-                Chart.register(ChartDataLabels);
+                case "regionnz":
+                    data = basemap.region_data
+                    labels = data.map(item => item.region_name);
                 
-                const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    height:300,
-                    width:350,
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Sourced',
-                            data: sourcedData,
-                            backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
-                        }, {
-                            label: 'Nego',
-                            data: negoData,
-                            backgroundColor: 'rgba(255, 99, 132, 0.8)',   // Red
-                        }, {
-                            label: 'Secured',
-                            data: securedData,
-                            backgroundColor: 'rgba(8, 244, 24, 0.82)',  // Green
-                        }, {
-                            label: 'Opened',
-                            data: openedData,
-                            backgroundColor: 'rgba(255, 159, 64, 0.8)'    // Orange
-                        }]
+                    sourcedData = data.map(item => parseInt(item["nz sourced"]));
+                    negoData = data.map(item => parseInt(item["nz nego"]));
+                    securedData = data.map(item => parseInt(item["nz secured"]));
+                    openedData = data.map(item => parseInt(item["nz opened"]));
+    
+                    ctx = document.getElementById('regionNZ').getContext('2d');
+                
+                break;
+
+                case "regionmup":
+                    data = basemap.region_data
+                    labels = data.map(item => item.region_name);
+                
+                    sourcedData = data.map(item => parseInt(item["mup sourced"]));
+                    negoData = data.map(item => parseInt(item["mup nego"]));
+                    securedData = data.map(item => parseInt(item["mup secured"]));
+                    openedData = data.map(item => parseInt(item["mup opened"]));
+    
+                    ctx = document.getElementById('regionMUP').getContext('2d');
+                
+                break;
+
+            }//end sw
+            
+
+            // Check if a chart instance exists and destroy it
+            const existingChart = Chart.getChart(divid);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+            
+
+            Chart.register(ChartDataLabels);
+            
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                height:300,
+                width:350,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sourced',
+                        data: sourcedData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
+                    }, {
+                        label: 'Nego',
+                        data: negoData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.8)',   // Red
+                    }, {
+                        label: 'Secured',
+                        data: securedData,
+                        backgroundColor: 'rgba(8, 244, 24, 0.82)',  // Green
+                    }, {
+                        label: 'Opened',
+                        data: openedData,
+                        backgroundColor: 'rgba(255, 159, 64, 0.8)'    // Orange
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Count'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Owner'
+                            }
+                        }
                     },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Count'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Owner'
+                    plugins: {
+                        title: {
+                            display: true,
+                            //text: 'NZ Performance Data',
+                            padding: 10,
+                            font: {
+                                size: 18
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'decimal' }).format(context.parsed.y);
+                                    }
+                                    return label;
                                 }
                             }
                         },
-                        plugins: {
-                            title: {
-                                display: true,
-                                //text: 'NZ Performance Data',
-                                padding: 10,
-                                font: {
-                                    size: 18
-                                }
-                            },
-                            legend: {
-                                position: 'bottom',
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += new Intl.NumberFormat('en-US', { style: 'decimal' }).format(context.parsed.y);
-                                        }
-                                        return label;
-                                    }
-                                }
-                            },
-                            datalabels: {   // Add datalabels plugin options here
-                                anchor: 'end',
-                                align: 'top',
-                                formatter: Math.round,
-                                font: {
-                                    weight: 'bold',
-                                    size: 12
-                                }
+                        datalabels: {   // Add datalabels plugin options here
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: Math.round,
+                            font: {
+                                weight: 'bold',
+                                size: 12
                             }
-                        }, //====end plugin
-                        responsive: false,
-                        maintainAspectRatio: false
-                    }
-                });
+                        }
+                    }, //====end plugin
+                    responsive: false,
+                    maintainAspectRatio: false
+                }
+            });
         },
 
         getElevationAsync: (lat, lng)=> {
@@ -218,11 +261,8 @@
         },
 
         //=== for main performance dashboard
-        sdo_chart1: null,
-        sdo_chart2: null,
-
-        region_chart: null,
-        performance_data:null,
+        sdo_data:null,
+        region_data:null,
 
         getMainPerformance: async() =>{
             await fetch(`${myIp}/sdoperformance`,{
@@ -231,9 +271,13 @@
             .then( (res) => res.json() )
 
             .then( (results)  => {
+                console.log('sdo', results.data_sdo, 'region', results.data_region)
 
-                basemap.performance_data = results
-                console.log('PERFORMANCE  DATA-->', basemap.performance_data )
+
+                basemap.sdo_data = results.data_sdo
+                basemap.region_data = results.data_region
+                
+                //console.log('PERFORMANCE  DATA-->', basemap.performance_data )
             })	
             .catch((error) => {
                 //util.Toast(`Error:, ${error}`,1000)
